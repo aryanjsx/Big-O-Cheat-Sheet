@@ -154,7 +154,7 @@
   .btn[aria-pressed="true"] { background: var(--link); color: var(--bg); border-color: var(--link); }
 
   /* Search and filters */
-  .filters { display: grid; grid-template-columns: minmax(220px, 2fr) repeat(3, minmax(150px, 1fr)) auto; gap: .6rem; align-items: end; margin: 1rem 0 .5rem; }
+  .filters { display: grid; grid-template-columns: minmax(220px, 2fr) repeat(4, minmax(140px, 1fr)) auto; gap: .6rem; align-items: end; margin: 1rem 0 .5rem; }
   @media (max-width: 900px) { .filters { grid-template-columns: 1fr 1fr; } .filters .search-box { grid-column: 1 / -1; } }
   .filters label { display: block; font-size: .85rem; font-weight: 600; margin-bottom: .2rem; }
   .filters input, .filters select {
@@ -269,8 +269,11 @@
   .three-up > div { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: .75rem 1rem 1rem; min-width: 0; }
   .three-up h3 { margin: 0 0 .25rem; font-size: 1.05rem; font-family: inherit; }
 </style>
+<link rel="stylesheet" href="assets/features.css">
 </head>
 <body>
+<a class="skip-link" href="#explore">Skip to search</a>
+<div id="sr-live" class="sr-only" role="status" aria-live="polite"></div>
 <main>
 
 <h1>Big O cheat sheet</h1>
@@ -282,11 +285,14 @@
   <button type="button" class="btn" id="btn-print">Print or save as PDF</button>
   <a class="btn" href="Big-O-Sheet.pdf" download>Download full PDF</a>
   <a class="btn" href="Big-O-Sheet-one-page.pdf" download>Download one-page PDF</a>
+  <button type="button" class="btn" id="btn-shortcuts" aria-haspopup="dialog">Keyboard shortcuts</button>
 </div>
 
 <nav class="toc" aria-label="Sections">
   <a href="#explore">Search</a>
-  <a href="#fundamentals">Complexity fundamentals</a>
+  <a href="#lookup">Lookup</a>
+  <a href="#roadmap">Roadmap</a>
+  <a href="#fundamentals">Playground</a>
   <a href="#data-structures">Data structures</a>
   <a href="#more-data-structures">More data structures</a>
   <a href="#graph-representations">Graph representations</a>
@@ -294,6 +300,11 @@
   <a href="#algorithms">Algorithm reference</a>
   <a href="#graph-tree">Graph and tree algorithms</a>
   <a href="#coding-patterns">Coding patterns</a>
+  <a href="#visualizer">Visualizer</a>
+  <a href="#quiz">Quiz</a>
+  <a href="#challenge">Challenges</a>
+  <a href="#compare">Compare</a>
+  <a href="#export">Export and share</a>
 </nav>
 
 <div id="full-view">
@@ -338,32 +349,46 @@
       <option>Medium</option>
     </select>
   </div>
+  <div>
+    <label for="f-status">My progress</label>
+    <select id="f-status">
+      <option value="">All topics</option>
+      <option value="saved">Saved</option>
+      <option value="learned">Learned</option>
+      <option value="todo">Not learned yet</option>
+    </select>
+  </div>
   <button type="button" class="btn" id="f-reset">Reset filters</button>
 </div>
+<p id="resume"></p>
 <p id="result-count" aria-live="polite"></p>
 <div id="cards" class="cards"></div>
 <noscript><p>Search needs JavaScript. All of the tables below work without it.</p></noscript>
 </section>
 
+<!-- ============ Complexity lookup ============ -->
+<section id="lookup" class="interactive" aria-labelledby="lookup-title">
+<h2 id="lookup-title">Complexity lookup</h2>
+<p>Type an operation or algorithm to see its best, average, and worst case in one place, with the assumption behind the average case and the caveat people usually miss.</p>
+<div id="lookup-mount"></div>
+<noscript><p>The lookup needs JavaScript. The tables below list the same costs.</p></noscript>
+</section>
+
+<!-- ============ Roadmap ============ -->
+<section id="roadmap" class="interactive" aria-labelledby="roadmap-title">
+<h2 id="roadmap-title">DSA interview roadmap</h2>
+<p>A suggested order for learning the topics on this sheet. Each step lists what to learn first. Tick a topic when you are comfortable with it. Your progress is stored in this browser only.</p>
+<div id="roadmap-mount"></div>
+<noscript><p>The roadmap needs JavaScript. A reasonable order is arrays, hash tables, two pointers, binary search, sorting, trees, graphs, heaps, then dynamic programming.</p></noscript>
+</section>
+
 <!-- ============ 1. Complexity fundamentals ============ -->
-<h2 id="fundamentals">Complexity fundamentals</h2>
-<p>Big O describes how the work an algorithm does grows as the input size <code>n</code> grows. It ignores constants and lower-order terms, so it tells you which algorithm wins on large inputs, not which one is faster on ten items.</p>
+<h2 id="fundamentals">Complexity fundamentals and playground</h2>
+<p>Big O describes how the work an algorithm does grows as the input size <code>n</code> grows. It ignores constants and lower-order terms, so it tells you which algorithm wins on large inputs, not which one is faster on ten items. Change <code>n</code> below to see how the growth classes pull apart.</p>
 
-<div class="explorer">
-  <div>
-    <div class="control">
-      <label for="n-input">Input size n</label>
-      <input id="n-input" type="number" min="1" max="1000000" step="1" value="20" inputmode="numeric">
-      <input id="n-range" type="range" min="1" max="30" step="1" value="20" aria-label="Input size n, chart range 1 to 30">
-    </div>
-    <p id="chart-note" aria-live="polite"></p>
-    <div class="chart">
-      <svg id="growth-chart" viewBox="0 0 640 360" role="img"
-           aria-label="Growth curves for O(1), O(log n), O(n), O(n log n), O(n squared), and O(2 to the n) for input sizes 1 to 30. The exponential and quadratic curves leave the chart first."></svg>
-    </div>
-  </div>
-
-  <div class="table-wrap" role="region" aria-label="Operation counts by complexity class" tabindex="0">
+<div id="playground-mount"></div>
+<noscript>
+<div class="table-wrap" role="region" aria-label="Operation counts by complexity class" tabindex="0">
     <table class="table" id="ops-table">
       <caption>Approximate operations for the chosen n</caption>
       <thead>
@@ -379,8 +404,8 @@
       </tbody>
     </table>
   </div>
-</div>
-<p class="footnotes">Logarithms are base 2. The chart shows n from 1 to 30 and clips at 200 operations, so the steepest curves leave the plot early. Type a larger n to see the table values diverge.</p>
+</noscript>
+<p class="footnotes">Logarithms are base 2. In the linear view the chart clips at the top, so the steepest curves leave the plot early. Switch the operations axis to logarithmic to keep every curve in view, or type a larger n to see the table values diverge. Time estimates assume 10<sup>8</sup> simple operations per second.</p>
 
 <div class="examples">
   <article class="example">
@@ -1139,6 +1164,41 @@
 </table>
 </div>
 
+<!-- ============ Interactive practice ============ -->
+<section id="visualizer" class="interactive" aria-labelledby="visualizer-title">
+<h2 id="visualizer-title">Algorithm visualizer</h2>
+<p>Watch binary search, linear search, bubble sort, merge sort, BFS, and DFS work one step at a time. Each step shows what was compared or moved, and the counters show where the cost comes from. Step back as well as forward.</p>
+<div id="visualizer-mount"></div>
+<noscript><p>The visualizer needs JavaScript.</p></noscript>
+</section>
+
+<section id="quiz" class="interactive" aria-labelledby="quiz-title">
+<h2 id="quiz-title">Big O quiz</h2>
+<div id="quiz-mount"></div>
+<noscript><p>The quiz needs JavaScript.</p></noscript>
+</section>
+
+<section id="challenge" class="interactive" aria-labelledby="challenge-title">
+<h2 id="challenge-title">Code complexity challenges</h2>
+<p>Read the snippet, then predict both its time and its auxiliary space before you reveal the answer. Snippets are shown in Python, JavaScript, and Java. Costs can differ between languages, and the explanation says when they do.</p>
+<div id="challenge-mount"></div>
+<noscript><p>The challenges need JavaScript.</p></noscript>
+</section>
+
+<section id="compare" class="interactive" aria-labelledby="compare-title">
+<h2 id="compare-title">Compare two algorithms</h2>
+<p>Pick any two topics to compare time, space, stability, best uses, and trade-offs. Copy the result as a Markdown table or share a link that opens the same comparison.</p>
+<div id="compare-mount"></div>
+<noscript><p>The comparison needs JavaScript.</p></noscript>
+</section>
+
+<section id="export" class="interactive" aria-labelledby="export-title">
+<h2 id="export-title">Export and share</h2>
+<p>Take the sheet with you. Copy a Markdown table, download a CSV, or print compact topic cards for the topics you choose.</p>
+<div id="export-mount"></div>
+<noscript><p>Export needs JavaScript. Use the print button or the PDF downloads at the top of the page.</p></noscript>
+</section>
+
 <h2 id="notation">Reading the notation</h2>
 <ul>
   <li><code>O(...)</code> describes an asymptotic upper bound.</li>
@@ -1176,137 +1236,14 @@
 
 </main>
 
-<script>
-(function () {
-  var SVG_NS = 'http://www.w3.org/2000/svg';
-  var W = 640, H = 360, L = 52, R = 16, T = 16, B = 44;
-  var X_MAX = 30, Y_MAX = 200;
-  var LOG10_2 = Math.log10(2);
 
-  var curves = [
-    { key: 'c1',   label: 'O(1)',       color: 'var(--c-green)',  f: function () { return 1; } },
-    { key: 'log',  label: 'O(log n)',   color: 'var(--c-yg)',     f: function (n) { return Math.log2(n); } },
-    { key: 'lin',  label: 'O(n)',       color: 'var(--c-yellow)', f: function (n) { return n; } },
-    { key: 'nlog', label: 'O(n log n)', color: 'var(--c-orange)', f: function (n) { return n * Math.log2(n); } },
-    { key: 'quad', label: 'O(n²)',      color: 'var(--c-red)',    f: function (n) { return n * n; } },
-    { key: 'exp',  label: 'O(2ⁿ)',      color: 'var(--c-dred)',   f: function (n) { return Math.pow(2, n); } }
-  ];
-
-  function px(n) { return L + (n - 1) / (X_MAX - 1) * (W - L - R); }
-  function py(v) { return T + (1 - v / Y_MAX) * (H - T - B); }
-
-  function el(name, attrs, text) {
-    var e = document.createElementNS(SVG_NS, name);
-    for (var k in attrs) e.setAttribute(k, attrs[k]);
-    if (text != null) e.textContent = text;
-    return e;
-  }
-
-  var svg = document.getElementById('growth-chart');
-  var markerGroup = el('g', {});
-
-  function drawChart() {
-    var defs = el('defs', {});
-    var clip = el('clipPath', { id: 'plot-clip' });
-    clip.appendChild(el('rect', { x: L, y: T, width: W - L - R, height: H - T - B }));
-    defs.appendChild(clip);
-    svg.appendChild(defs);
-
-    [0, 50, 100, 150, 200].forEach(function (v) {
-      svg.appendChild(el('line', { 'class': 'grid', x1: L, x2: W - R, y1: py(v), y2: py(v) }));
-      svg.appendChild(el('text', { 'class': 'axis-label', x: L - 8, y: py(v) + 4, 'text-anchor': 'end' }, String(v)));
-    });
-    [1, 5, 10, 15, 20, 25, 30].forEach(function (n) {
-      svg.appendChild(el('line', { 'class': 'grid', x1: px(n), x2: px(n), y1: T, y2: H - B }));
-      svg.appendChild(el('text', { 'class': 'axis-label', x: px(n), y: H - B + 18, 'text-anchor': 'middle' }, String(n)));
-    });
-    svg.appendChild(el('text', { 'class': 'axis-label', x: (L + W - R) / 2, y: H - 6, 'text-anchor': 'middle' }, 'Input size n'));
-    svg.appendChild(el('text', {
-      'class': 'axis-label', x: 14, y: (T + H - B) / 2, 'text-anchor': 'middle',
-      transform: 'rotate(-90 14 ' + ((T + H - B) / 2) + ')'
-    }, 'Operations'));
-
-    var plot = el('g', { 'clip-path': 'url(#plot-clip)' });
-    curves.forEach(function (c) {
-      var d = '';
-      for (var n = 1; n <= X_MAX + 0.001; n += 0.25) {
-        var v = Math.min(c.f(n), Y_MAX * 1.2);
-        d += (d ? 'L' : 'M') + px(n).toFixed(1) + ' ' + py(v).toFixed(1);
-      }
-      plot.appendChild(el('path', { 'class': 'curve', d: d, style: 'stroke:' + c.color }));
-    });
-    svg.appendChild(plot);
-    svg.appendChild(markerGroup);
-  }
-
-  function drawMarker(n) {
-    while (markerGroup.firstChild) markerGroup.removeChild(markerGroup.firstChild);
-    if (n > X_MAX) return;
-    var x = px(n);
-    markerGroup.appendChild(el('line', { 'class': 'marker', x1: x, x2: x, y1: T, y2: H - B }));
-    curves.forEach(function (c) {
-      var v = c.f(n);
-      if (v <= Y_MAX) {
-        markerGroup.appendChild(el('circle', { cx: x, cy: py(v), r: 4, style: 'fill:' + c.color }));
-      }
-    });
-    var anchor = n > X_MAX * 0.8 ? 'end' : 'start';
-    var dx = anchor === 'end' ? -6 : 6;
-    markerGroup.appendChild(el('text', { 'class': 'marker-label', x: x + dx, y: T + 12, 'text-anchor': anchor }, 'n = ' + n));
-  }
-
-  function fmt(v) {
-    if (v < 1000) return (Math.round(v * 10) / 10).toLocaleString('en-US');
-    if (v < 1e9) return Math.round(v).toLocaleString('en-US');
-    var e = Math.floor(Math.log10(v));
-    return (v / Math.pow(10, e)).toFixed(2) + ' × 10<sup>' + e + '</sup>';
-  }
-  function fmtExp(n) {
-    var d = n * LOG10_2;
-    if (d < 9) return fmt(Math.pow(2, n));
-    var e = Math.floor(d);
-    return Math.pow(10, d - e).toFixed(2) + ' × 10<sup>' + e + '</sup>';
-  }
-
-  var numInput = document.getElementById('n-input');
-  var rangeInput = document.getElementById('n-range');
-  var note = document.getElementById('chart-note');
-
-  function update(n) {
-    n = Math.max(1, Math.min(1000000, Math.round(n)));
-    var cells = document.querySelectorAll('#ops-table [data-k]');
-    Array.prototype.forEach.call(cells, function (td) {
-      var k = td.getAttribute('data-k');
-      td.innerHTML = k === 'exp' ? fmtExp(n) : fmt(curves.filter(function (c) { return c.key === k; })[0].f(n));
-    });
-    drawMarker(n);
-    note.textContent = n > X_MAX ? 'The chart covers n up to ' + X_MAX + '. The table still reflects n = ' + n.toLocaleString('en-US') + '.' : '';
-    return n;
-  }
-
-  numInput.addEventListener('input', function () {
-    var v = parseInt(numInput.value, 10);
-    if (isNaN(v)) return;
-    var n = update(v);
-    rangeInput.value = Math.min(n, X_MAX);
-  });
-  numInput.addEventListener('change', function () {
-    var v = numInput.value === '' ? NaN : Number(numInput.value);
-    var n = isFinite(v) ? Math.max(1, Math.min(1000000, Math.round(v))) : 20;
-    numInput.value = n;
-    n = update(n);
-    rangeInput.value = Math.min(n, X_MAX);
-  });
-  rangeInput.addEventListener('input', function () {
-    var n = update(parseInt(rangeInput.value, 10));
-    numInput.value = n;
-  });
-
-  drawChart();
-  update(20);
-})();
-</script>
-
+<script src="assets/data.js"></script>
+<script src="assets/core.js"></script>
+<script src="assets/reference.js"></script>
+<script src="assets/playground.js"></script>
+<script src="assets/visualizer.js"></script>
+<script src="assets/practice.js"></script>
+<script src="assets/compare-export.js"></script>
 <script>
 (function () {
   var ENTRIES = [
@@ -1950,6 +1887,7 @@
   var topicEl = document.getElementById('f-topic');
   var classEl = document.getElementById('f-class');
   var relEl = document.getElementById('f-rel');
+  var statusEl = document.getElementById('f-status');
 
   ENTRIES.forEach(function (e) {
     e.hay = [e.name, e.topic, e.keywords, e.when, e.why, e.pitfall, e.time, e.space].join(' ').toLowerCase();
@@ -1998,6 +1936,7 @@
     var s = el('a', null, 'See it in the tables'); s.href = '#' + e.section; links.appendChild(s);
     d.appendChild(links);
     a.appendChild(d);
+    if (window.BigO && BigO.decorateCard) BigO.decorateCard(a, e);
     return a;
   }
 
@@ -2006,6 +1945,7 @@
     if (topicEl.value && e.topic !== topicEl.value) return false;
     if (classEl.value && e.classes.indexOf(classEl.value) < 0) return false;
     if (relEl.value && e.rel !== relEl.value) return false;
+    if (window.BigO && BigO.statusMatch && !BigO.statusMatch(e)) return false;
     if (q) {
       var toks = q.split(/\s+/);
       for (var i = 0; i < toks.length; i++) {
@@ -2027,9 +1967,9 @@
     countEl.textContent = list.length + ' of ' + ENTRIES.length + ' topics shown';
   }
 
-  [qEl, topicEl, classEl, relEl].forEach(function (c) { c.addEventListener('input', render); });
+  [qEl, topicEl, classEl, relEl, statusEl].forEach(function (c) { c.addEventListener('input', render); });
   document.getElementById('f-reset').addEventListener('click', function () {
-    qEl.value = ''; topicEl.value = ''; classEl.value = ''; relEl.value = ''; render(); qEl.focus();
+    qEl.value = ''; topicEl.value = ''; classEl.value = ''; relEl.value = ''; statusEl.value = ''; render(); qEl.focus();
   });
   render();
 
@@ -2069,6 +2009,8 @@
   document.getElementById('btn-print').addEventListener('click', function () { window.print(); });
   window.addEventListener('hashchange', function () { if (location.hash === '#revision') setRevision(true, false); });
   if (location.hash === '#revision') setRevision(true, false);
+  document.getElementById('btn-shortcuts').addEventListener('click', function () { if (window.BigO) BigO.showShortcuts(); });
+  if (window.BigO) BigO.setEntries(ENTRIES, render);
 })();
 </script>
 </body>
