@@ -33,19 +33,7 @@ A compact, browser-friendly reference for comparing the time and space complexit
 
 ## View the cheat sheet
 
-Visit [BIGOSHEET](https://aryanjsx.github.io/Big-O-Cheat-Sheet/) or open `index.html` in a web browser. The project is a static page with a small `assets` folder, and it does not require installation, a build step, or a development server. It works offline and follows your system's light or dark setting.
-
-### Keyboard shortcuts
-
-| Key | Action |
-| --- | --- |
-| `/` | Focus the search box |
-| `?` | Show the shortcut list |
-| `r` | Switch between the full sheet and the one-page revision view |
-| `b` | Save or unsave the card that has focus |
-| `l` | Mark the card that has focus as learned |
-| Space, Left arrow, Right arrow | In the visualizer: play or pause, step back, step forward |
-| `1` to `4` | In the quiz: pick an answer |
+Visit [BIGOSHEET](https://aryanjsx.github.io/Big-O-Sheet/) or open `index.html` in a web browser. The project is a single static HTML page and does not require installation, a build step, or a development server. It works offline and follows your system's light or dark setting.
 
 ## Reading the notation
 
