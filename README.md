@@ -20,7 +20,7 @@ A compact, browser-friendly reference for comparing the time and space complexit
 
 ## View the cheat sheet
 
-Visit [BIGOSHEET](https://aryanjsx.github.io/Big-O-Sheet/) or open `index.html` in a web browser. The project is a single static HTML page and does not require installation, a build step, or a development server. It works offline and follows your system's light or dark setting.
+Visit [BIGOSHEET](https://aryanjsx.github.io/Big-O-Cheat-Sheet/) or open `index.html` in a web browser. The project is a single static HTML page and does not require installation, a build step, or a development server. It works offline and follows your system's light or dark setting.
 
 ## Reading the notation
 
