@@ -72,14 +72,14 @@ export default function GraphRepresentations() {
       <p>An undirected graph with four vertices and edges 0–1, 0–2, 1–3, and 2–3.</p>
       <div className="three-up">
         <div>
-          <h3>Adjacency list</h3>
+          <h4>Adjacency list</h4>
       <pre><code>{`0: [1, 2]
 1: [0, 3]
 2: [0, 3]
 3: [1, 2]`}</code></pre>
         </div>
         <div>
-          <h3>Adjacency matrix</h3>
+          <h4>Adjacency matrix</h4>
       <pre><code>{`    0 1 2 3
 0 [ 0 1 1 0 ]
 1 [ 1 0 0 1 ]
@@ -87,7 +87,7 @@ export default function GraphRepresentations() {
 3 [ 0 1 1 0 ]`}</code></pre>
         </div>
         <div>
-          <h3>Edge list</h3>
+          <h4>Edge list</h4>
       <pre><code>{`(0, 1)
 (0, 2)
 (1, 3)

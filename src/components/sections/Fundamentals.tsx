@@ -5,8 +5,9 @@ export default function Fundamentals() {
     <>
 
       <Playground />
-      <p className="footnotes">Logarithms are base 2. In the linear view the chart clips at the top, so the steepest curves leave the plot early. Switch the operations axis to logarithmic to keep every curve in view, or type a larger n to see the table values diverge. Time estimates assume 10<sup>8</sup> simple operations per second.</p>
+      <p className="footnotes">Logarithms are base 2. In the linear view the chart clips at the top, so the steepest curves leave the plot early. Switch the operations axis to logarithmic to keep every curve in view, or type a larger n to see the table values diverge. Time estimates divide the operation count by an assumed 10<sup>8</sup> simple operations per second. They are not measurements: hardware, the language runtime, constant factors, memory access, and the input all change real running time.</p>
 
+      <h2 id="examples">Code for each class</h2>
       <div className="examples">
         <article className="example">
           <h3>O(1): constant</h3>
@@ -67,7 +68,7 @@ export default function Fundamentals() {
         </article>
       </div>
 
-      <h3>Color key</h3>
+      <h2 id="color-key">Color key</h2>
       <ul className="legend" aria-label="Color key for complexity classes">
         <li><code className="green">O(1)</code></li>
         <li><code className="yellow-green">O(log n)</code></li>

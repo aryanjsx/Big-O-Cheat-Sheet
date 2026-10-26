@@ -3,6 +3,8 @@ import HomeProgress from "@/components/home/HomeProgress";
 import HomeSearch from "@/components/home/HomeSearch";
 import LegacyLinks from "@/components/home/LegacyLinks";
 import { ENTRIES } from "@/data/entries";
+import { LOOKUP } from "@/data/lookup";
+import { complexityColor } from "@/lib/complexity";
 import { CURVES, fmtDuration } from "@/lib/growth";
 import { pageMeta } from "@/lib/meta";
 import { GITHUB_URL, NAV, TOPICS_PAGE, topicHref } from "@/lib/routes";
@@ -19,17 +21,17 @@ export const metadata = {
 
 const N = 1_000_000;
 
-// The costs people get asked about most. Each row links to its topic page.
-const MOST_ASKED: { label: string; id: string; avg: [string, string]; worst: [string, string] }[] = [
-  { label: "Hash table lookup", id: "hash-table", avg: ["O(1)", "green"], worst: ["O(n)", "yellow"] },
-  { label: "Binary search", id: "binary-search", avg: ["O(log n)", "yellow-green"], worst: ["O(log n)", "yellow-green"] },
-  { label: "Heap push or pop", id: "binary-heap", avg: ["O(log n)", "yellow-green"], worst: ["O(log n)", "yellow-green"] },
-  { label: "Sort with mergesort", id: "mergesort", avg: ["O(n log n)", "orange"], worst: ["O(n log n)", "orange"] },
-  { label: "Sort with quicksort", id: "quicksort", avg: ["O(n log n)", "orange"], worst: ["O(n²)", "red"] },
-  { label: "BFS or DFS", id: "bfs", avg: ["O(V + E)", "yellow"], worst: ["O(V + E)", "yellow"] },
-  { label: "Dijkstra with a binary heap", id: "dijkstra", avg: ["O((V + E) log V)", "orange"], worst: ["O((V + E) log V)", "orange"] },
-  { label: "Generate every subset", id: "backtracking", avg: ["O(2ⁿ)", "dark-red"], worst: ["O(2ⁿ)", "dark-red"] },
-];
+// The costs people get asked about most, by row name in data/lookup.ts.
+const MOST_ASKED = [
+  "Hash table lookup, insert, delete",
+  "Binary search",
+  "Binary heap pop",
+  "Merge sort",
+  "Quicksort",
+  "Breadth-first search",
+  "Dijkstra shortest path",
+  "Union-Find find and union",
+].map((name) => LOOKUP.find((r) => r.name === name)!);
 
 export default function Home() {
   return (
@@ -55,7 +57,7 @@ export default function Home() {
 
         <aside className="scale-card" aria-labelledby="scale-title">
           <h2 id="scale-title">One million items</h2>
-          <p>Roughly how long each class takes at 10⁸ simple operations a second.</p>
+          <p>Operation count divided by an assumed 10⁸ simple operations a second. An estimate, not a benchmark.</p>
           <table>
             <tbody>
               {CURVES.map((c) => (
@@ -102,7 +104,7 @@ export default function Home() {
 
       <section className="home-section" aria-labelledby="asked-title">
         <h2 id="asked-title">The ones you will be asked about</h2>
-        <p>If you only memorize eight lines, make it these. Each links to the full explanation.</p>
+        <p>If you only memorize eight lines, make it these. Each links to the full explanation, and the <Link href="/lookup/">lookup</Link> has the assumptions.</p>
         <div className="table-wrap" role="region" aria-label="Most asked complexities" tabIndex={0}>
           <table className="table">
             <thead>
@@ -114,15 +116,13 @@ export default function Home() {
             </thead>
             <tbody>
               {MOST_ASKED.map((r) => (
-                <tr key={r.label}>
+                <tr key={r.name}>
+                  <td>{r.entry ? <Link href={topicHref(r.entry)}>{r.name}</Link> : r.name}</td>
                   <td>
-                    <Link href={topicHref(r.id)}>{r.label}</Link>
+                    <code className={complexityColor(r.avg)}>{r.avg}</code>
                   </td>
                   <td>
-                    <code className={r.avg[1]}>{r.avg[0]}</code>
-                  </td>
-                  <td>
-                    <code className={r.worst[1]}>{r.worst[0]}</code>
+                    <code className={complexityColor(r.worst)}>{r.worst}</code>
                   </td>
                 </tr>
               ))}
@@ -130,8 +130,9 @@ export default function Home() {
           </table>
         </div>
         <p className="footnotes">
-          The hash table worst case assumes many keys collide. Quicksort hits O(n²) with a bad pivot on sorted input. The
-          colors match the strip at the top of every page: green is cheapest, dark red is exponential.
+          The hash table worst case assumes many keys collide. Quicksort hits O(n²) when the pivot keeps splitting badly, such
+          as a first-element pivot on sorted input. The colors match the strip at the top of every page: green is cheapest,
+          dark red is exponential.
         </p>
       </section>
 

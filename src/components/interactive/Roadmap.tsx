@@ -44,7 +44,7 @@ export default function Roadmap() {
       <div className="roadmap">
         {LEVELS.map((lvl, li) => (
           <section className="road-level" key={lvl.level}>
-            <h3>{lvl.level}</h3>
+            <h2>{lvl.level}</h2>
             <p className="road-blurb">{lvl.blurb}</p>
             <ol className="road-steps" start={STARTS[li]}>
               {lvl.steps.map((s) => {
@@ -83,6 +83,21 @@ export default function Roadmap() {
           </section>
         ))}
       </div>
+      <p className="hint" style={{ marginTop: "1.5rem" }}>
+        <button
+          type="button"
+          className="btn btn-sm"
+          disabled={!done && !progress.state.bookmarks.length && progress.state.quiz.runs === 0}
+          onClick={() => {
+            if (!window.confirm("Clear saved topics, learned topics, and quiz scores in this browser? This can't be undone.")) return;
+            progress.reset();
+            announce("Progress cleared");
+          }}
+        >
+          Reset all progress
+        </button>{" "}
+        Clears saved and learned topics, the last topic you opened, and quiz and challenge results.
+      </p>
     </>
   );
 }

@@ -157,7 +157,7 @@ sup { line-height: 0; }
 #result-count { color: var(--muted); font-size: .9rem; margin: .25rem 0 .75rem; }
 .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1rem; align-items: start; }
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: .9rem 1rem; min-width: 0; }
-.card h3 { margin: 0 0 .35rem; font-size: 1.1rem; }
+.card h2 { margin: 0 0 .35rem; font-size: 1.1rem; border-top: none; padding-top: 0; }
 .badges { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .5rem; }
 .badge { font-size: .78rem; padding: .05rem .5rem; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); }
 .badge.high { border-color: var(--c-green); color: var(--green-fg); background: var(--green-bg); }
@@ -178,7 +178,7 @@ sup { line-height: 0; }
 .rev-grid { column-count: 2; column-gap: 1.25rem; }
 .rev-grid .rev-block { break-inside: avoid; margin-bottom: .75rem; }
 @media (max-width: 760px) { .rev-grid { column-count: 1; } }
-.rev-block h3 { margin: 0 0 .25rem; font-size: 1rem; }
+.rev-block h2 { margin: 0 0 .25rem; font-size: 1rem; border-top: none; padding-top: 0; }
 .rev-block table { width: 100%; border-collapse: collapse; font-size: .82rem; background: var(--surface); }
 .rev-block th, .rev-block td { border: 1px solid var(--border); padding: .2rem .4rem; text-align: left; vertical-align: top; }
 .rev-block th { background: var(--stripe); }
@@ -219,7 +219,7 @@ sup { line-height: 0; }
   .revision-page h1 { font-size: 15pt; margin-bottom: 2pt; }
   .revision-page .rev-grid { column-count: 2; column-gap: 10pt; }
   .revision-page .rev-grid .rev-block { margin-bottom: 5pt; }
-  .revision-page .rev-block h3 { font-size: 10pt; margin: 0 0 1.5pt; }
+  .revision-page .rev-block h2 { font-size: 10pt; margin: 0 0 1.5pt; }
   .revision-page .rev-block table { font-size: 7.8pt; }
   .revision-page .rev-block th, .revision-page .rev-block td { padding: 1pt 3pt; }
   .revision-page .rev-note, .revision-page .rev-rules table { font-size: 7.8pt; }
@@ -256,7 +256,7 @@ sup { line-height: 0; }
 
 .three-up { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin: 1rem 0; }
 .three-up > div { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: .75rem 1rem 1rem; min-width: 0; }
-.three-up h3 { margin: 0 0 .25rem; font-size: 1.05rem; font-family: inherit; }
+.three-up h4 { margin: 0 0 .25rem; font-size: 1.05rem; font-family: inherit; }
 
 /* Styles for the interactive features. Uses the design tokens defined above. */
 
@@ -308,6 +308,8 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 .lookup-list li.is-active { outline: 2px solid var(--link); outline-offset: 1px; }
 .lookup-group { margin-left: .4rem; font-size: .75rem; opacity: .75; }
 .lookup-detail { margin-top: 1rem; }
+.lookup-detail h2 { margin: 0 0 .5rem; font-size: 1.3rem; border-top: none; padding-top: 0; }
+.quiz h2 { margin-top: 0; border-top: none; padding-top: 0; }
 .lookup-detail .links { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; margin-top: .6rem; font-size: .92rem; }
 .lookup-table th[scope="row"] { text-align: left; width: 11rem; }
 .lookup-table td { text-align: left; }
@@ -318,7 +320,7 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 .progress-fill { height: 100%; width: 0; background: var(--c-green); }
 .roadmap { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 1rem; align-items: start; }
 .road-level { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: .9rem 1rem; }
-.road-level h3 { margin: 0 0 .15rem; font-size: 1.15rem; }
+.road-level h2 { margin: 0 0 .15rem; font-size: 1.15rem; border-top: none; padding-top: 0; }
 .road-blurb { margin: 0 0 .5rem; color: var(--muted); font-size: .9rem; }
 .road-steps { margin: 0; padding-left: 1.4rem; max-width: none; }
 .road-step { padding: .3rem 0; border-top: 1px solid var(--border); }

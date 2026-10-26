@@ -8,12 +8,16 @@ Thanks for helping. Accuracy matters more than coverage here, so a small correct
 2. **Use the notation consistently.** `Θ` for tight bounds, `O` for upper bounds, `Ω` for lower bounds.
 3. **Name the implementation when it matters.** For example, a queue is O(1) with a circular buffer or linked list, and O(n) per dequeue if it shifts a plain array.
 4. **Cite a source.** Link a reference (Wikipedia, a textbook, or official docs) for anything non-obvious. If you are correcting an existing value, say what the old value got wrong.
-5. **Space means auxiliary space** unless a table says otherwise.
+5. **Space means auxiliary space** unless a table says otherwise. Say so when output space or the recursion stack matters.
+6. **Keep one source of truth.** If the same cost appears in a topic, a lookup row, and a comparison, change all of them, or better, read it from one place. The home page's "most asked" table and the visualizer's labels already read from `lookup.ts` and `entries.ts`.
+7. **Flag what you can't verify.** If you are not sure a bound is right, open an issue instead of guessing. Unresolved questions are listed at the end of [docs/complexity-audit.md](docs/complexity-audit.md).
 
 ## Set up
 
+You need Node.js 22.12 or later.
+
 ```bash
-npm install
+npm ci
 ```
 
 ```bash
@@ -21,6 +25,14 @@ npm run dev
 ```
 
 The site is a Next.js app exported as static files (`output: "export"` in `next.config.ts`). See the project layout in [README.md](README.md).
+
+Before you push, run the same checks as CI:
+
+```bash
+npm run check
+```
+
+That runs lint, the type check, `npm test` (unit tests and content validation), the build, and `npm run check-links` on the built site. A failing content check names the file and the item, for example `roadmap.ts "linear-search": prerequisite "binary-search" comes later in the order`.
 
 ## Adding content
 
@@ -52,7 +64,7 @@ All content lives in `src/data/`, typed by `src/data/types.ts`. Most changes are
 - **Comparison:** add to `COMPARE` in `compare.ts`, keyed by the card `id`. Use `"Not applicable"` for stability and in-place where they do not apply, so the row is hidden for that pair. The card gets a **Compare** button automatically.
 - **Other language example:** add to `MULTILANG` in `multilang.ts`, keyed by the card `id`. The `cost` sentence must say what the language changes.
 - **Roadmap step:** add `{ id, needs: [...] }` to the right level in `ROADMAP`. A step may only need topics that appear earlier in the order.
-- **Visualizer algorithm:** write a frame builder in `src/lib/visualizer.ts` that returns `Frame[]`, then add it to `ALGOS`.
+- **Visualizer algorithm:** write a frame builder in `src/lib/visualizer.ts` that returns `Frame[]`, then add it to `ALGOS` with its topic `entry` (its time and space are shown from the topic) or its own `time` and `space`. Add tests in `tests/visualizer.test.ts` that check the final result and the counters on best- and worst-case inputs. Counters describe the work in one run; don't present them as timings.
 
 ## Editing the reference tables
 
@@ -71,7 +83,8 @@ Progress is stored under one local storage key, `bigo:v1`. If you change what is
 
 ## Before you open a pull request
 
-- [ ] `npm run lint`, `npm run typecheck`, and `npm run build` pass.
+- [ ] `npm run check` passes (lint, type check, tests, build, and link check).
+- [ ] If you changed a complexity, add a row to [docs/complexity-audit.md](docs/complexity-audit.md) with the old value, the problem, and the source.
 - [ ] Run `npm run dev` and check the browser console for errors, including hydration warnings.
 - [ ] Check the page in light mode, dark mode, and print preview.
 - [ ] Try the search box and each filter with your new entry.
@@ -79,7 +92,7 @@ Progress is stored under one local storage key, `bigo:v1`. If you change what is
 - [ ] Tab through your change with the keyboard only, and check it with the system reduced-motion setting on.
 - [ ] If you added a quiz question or challenge, check that exactly one answer is correct.
 - [ ] Describe the source for any complexity you added or changed.
-- [ ] Regenerate `public/Big-O-Sheet.pdf` and `public/Big-O-Sheet-one-page.pdf` when content changes (print to PDF from the browser; print `/revision/` for the one-page version).
+- [ ] Regenerate `public/Big-O-Sheet-one-page.pdf` when a high-relevance topic's time or space changes: build, serve `out/`, and print `/revision/` to PDF with no headers or footers. Check that it is still one page before you commit it. `public/Big-O-Sheet.pdf` covers the static reference tables; regenerate it when those change.
 
 ## Writing style
 

@@ -27,7 +27,7 @@ function Detail({ r }: { r: LookupRow | undefined }) {
   ];
   return (
     <>
-      <h3 style={{ marginTop: 0 }}>{r.name}</h3>
+      <h2>{r.name}</h2>
       <div className="table-wrap" role="region" aria-label={"Complexity for " + r.name} tabIndex={0}>
         <table className="table lookup-table">
           <tbody>

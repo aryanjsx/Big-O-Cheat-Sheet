@@ -273,7 +273,7 @@ export default function Playground() {
               <tr>
                 <th>Complexity</th>
                 <th>Operations</th>
-                <th>At 10⁸ operations per second</th>
+                <th>Estimated time at 10⁸ operations per second</th>
               </tr>
             </thead>
             <tbody>

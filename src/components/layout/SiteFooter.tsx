@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { useProgress } from "@/context/ProgressContext";
 import { useSheet } from "@/context/SheetContext";
 import { GITHUB_URL, NAV, TOPICS_PAGE } from "@/lib/routes";
 import { asset } from "@/lib/utils";
 
 export default function SiteFooter() {
   const { setShortcutsOpen } = useSheet();
+  const { persistent } = useProgress();
   return (
     <footer className="site-footer">
       <div className="wrap footer-grid">
@@ -49,7 +51,7 @@ export default function SiteFooter() {
           <a href={GITHUB_URL}>Source and corrections on GitHub</a>.
         </span>
         <span>
-          Progress stays in this browser.{" "}
+          {persistent ? "Progress stays in this browser." : "Progress is not being saved in this browser."}{" "}
           <button type="button" className="linklike" onClick={() => setShortcutsOpen(true)}>
             Keyboard shortcuts
           </button>{" "}

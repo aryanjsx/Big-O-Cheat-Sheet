@@ -99,16 +99,16 @@ export default function Quiz() {
     const missed = run.items.filter((it) => it.picked !== it.q.answer);
     return (
       <div className="quiz">
-        <h3 ref={scoreRef} tabIndex={-1} style={{ marginTop: 0 }}>
+        <h2 ref={scoreRef} tabIndex={-1}>
           You scored {run.score} out of {run.items.length} ({pct}%)
-        </h3>
+        </h2>
         <p>
           {pct >= 80 ? "Strong result. " : pct >= 50 ? "Solid start. " : "Worth another pass. "}
           Your best score is {progress.state.quiz.best}%.
         </p>
         {missed.length > 0 && (
           <>
-            <h4>Questions to review</h4>
+            <h3>Questions to review</h3>
             <ul className="quiz-review">
               {missed.map((it, k) => (
                 <li key={k}>

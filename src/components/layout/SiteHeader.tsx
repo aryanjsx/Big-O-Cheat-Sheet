@@ -13,16 +13,20 @@ export default function SiteHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
 
-  // Close an open menu on an outside click or Escape.
+  // Close an open menu on an outside click or Escape. Escape also closes the phone menu.
   useEffect(() => {
-    if (!open) return;
+    if (!open && !mobileOpen) return;
     function onDown(ev: MouseEvent) {
-      if (!navRef.current?.contains(ev.target as Node)) setOpen(null);
+      if (open && !navRef.current?.contains(ev.target as Node)) setOpen(null);
     }
     function onKey(ev: KeyboardEvent) {
-      if (ev.key === "Escape") {
+      if (ev.key !== "Escape") return;
+      if (open) {
         setOpen(null);
         navRef.current?.querySelector<HTMLButtonElement>(`[data-group="${open}"]`)?.focus();
+      } else {
+        setMobileOpen(false);
+        document.querySelector<HTMLButtonElement>(".menu-toggle")?.focus();
       }
     }
     document.addEventListener("mousedown", onDown);
@@ -31,7 +35,7 @@ export default function SiteHeader() {
       document.removeEventListener("mousedown", onDown);
       document.removeEventListener("keydown", onKey);
     };
-  }, [open]);
+  }, [open, mobileOpen]);
 
   const close = () => {
     setOpen(null);

@@ -11,9 +11,9 @@ export default function TopicCard({ e }: { e: Entry }) {
   const { isLearned } = useProgress();
   return (
     <article className={"card" + (isLearned(e.id) ? " is-learned" : "")} id={"card-" + e.id}>
-      <h3>
+      <h2>
         <Link href={topicHref(e.id)}>{e.name}</Link>
-      </h3>
+      </h2>
       <div className="badges">
         <span className="badge">{e.topic}</span>
         <span className={"badge " + e.rel.toLowerCase()}>{e.rel} interview relevance</span>

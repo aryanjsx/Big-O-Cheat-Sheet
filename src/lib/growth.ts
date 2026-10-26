@@ -46,7 +46,12 @@ export function fmtLogPlain(l: number): string {
   return f.exp == null ? f.text : f.text + "^" + f.exp;
 }
 
-/** Estimated running time at OPS_PER_SEC, given log10 of the operation count. */
+function plural(n: number, unit: string): string {
+  return n.toLocaleString("en-US") + " " + unit + (n === 1 ? "" : "s");
+}
+
+/** An illustrative time: the operation count divided by OPS_PER_SEC. It is not a measurement.
+    Takes log10 of the operation count, so astronomically large counts do not overflow. */
 export function fmtDuration(lOps: number): string {
   if (lOps === -Infinity) return "instant";
   const ls = lOps - Math.log10(OPS_PER_SEC);
@@ -58,9 +63,9 @@ export function fmtDuration(lOps: number): string {
   if (ls < Math.log10(3600)) return Math.round(s / 60) + " min";
   if (ls < Math.log10(86400)) return (s / 3600).toFixed(1) + " hours";
   const lyears = ls - Math.log10(31557600);
-  if (lyears < 0) return Math.round(s / 86400) + " days";
+  if (lyears < 0) return plural(Math.round(s / 86400), "day");
   if (lyears > Math.log10(1.38e10)) return "longer than the age of the universe";
   const y = Math.pow(10, lyears);
-  if (lyears < 6) return Math.round(y).toLocaleString("en-US") + " years";
+  if (lyears < 6) return plural(Math.round(y), "year");
   return (y / 1e6).toFixed(1) + " million years";
 }
