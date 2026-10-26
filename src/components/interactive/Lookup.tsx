@@ -1,10 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import CopyButton from "@/components/ui/CopyButton";
 import { entryById } from "@/data/entries";
 import { LOOKUP } from "@/data/lookup";
 import type { LookupRow } from "@/data/types";
+import { topicHref } from "@/lib/routes";
 import { matchesTokens } from "@/lib/utils";
 
 const MAX = 8;
@@ -47,7 +49,7 @@ function Detail({ r }: { r: LookupRow | undefined }) {
         {r.caveat}
       </p>
       <div className="links">
-        {r.entry && entryById(r.entry) && <a href={"#algo=" + r.entry}>Open the full card</a>}
+        {r.entry && entryById(r.entry) && <Link href={topicHref(r.entry)}>Read the full topic</Link>}
         <CopyButton
           className="btn btn-sm"
           label="Copy as text"

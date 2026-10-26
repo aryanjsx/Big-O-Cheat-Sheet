@@ -1,27 +1,9 @@
-/* In-page navigation. Add a link here when you add a section with an id. */
-const LINKS: [string, string][] = [
-  ["explore", "Search"],
-  ["lookup", "Lookup"],
-  ["roadmap", "Roadmap"],
-  ["fundamentals", "Playground"],
-  ["data-structures", "Data structures"],
-  ["more-data-structures", "More data structures"],
-  ["graph-representations", "Graph representations"],
-  ["sorting", "Sorting"],
-  ["algorithms", "Algorithm reference"],
-  ["graph-tree", "Graph and tree algorithms"],
-  ["coding-patterns", "Coding patterns"],
-  ["visualizer", "Visualizer"],
-  ["quiz", "Quiz"],
-  ["challenge", "Challenges"],
-  ["compare", "Compare"],
-  ["export", "Export and share"],
-];
-
-export default function Toc() {
+/** "On this page" links for long pages with several sections. */
+export default function Toc({ links }: { links: [id: string, label: string][] }) {
   return (
-    <nav className="toc" aria-label="Sections">
-      {LINKS.map(([id, label]) => (
+    <nav className="toc" aria-label="On this page">
+      <span className="toc-label">On this page</span>
+      {links.map(([id, label]) => (
         <a key={id} href={"#" + id}>
           {label}
         </a>

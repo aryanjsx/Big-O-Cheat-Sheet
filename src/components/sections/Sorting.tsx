@@ -1,7 +1,6 @@
 export default function Sorting() {
   return (
     <>
-      <h2 id="sorting">Array sorting algorithms</h2>
       <div className="table-wrap" role="region" aria-label="Array sorting algorithms" tabIndex={0}>
       <table className="table"><tbody>
       <tr><th>Algorithm</th><th colSpan={3}>Time complexity</th><th>Space complexity</th></tr>

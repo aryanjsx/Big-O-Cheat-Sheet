@@ -15,7 +15,7 @@ type Scope = "all" | "filtered" | "saved" | "learned";
 
 const SCOPES: [Scope, string][] = [
   ["all", "All topics"],
-  ["filtered", "Topics currently shown in the search"],
+  ["filtered", "Topics matching your last search"],
   ["saved", "Saved topics"],
   ["learned", "Learned topics"],
 ];

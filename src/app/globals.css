@@ -81,15 +81,13 @@ a:focus-visible, input:focus-visible, summary:focus-visible, .table-wrap:focus-v
   outline: 3px solid var(--link); outline-offset: 2px;
 }
 
-/* In-page navigation */
+/* "On this page" links at the top of long pages */
 .toc {
-  position: sticky; top: 0; z-index: 10;
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
-  margin: 0 -1rem; padding: .6rem 1rem;
-  display: flex; flex-wrap: wrap; gap: .25rem 1rem;
-  font-size: .92rem;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem 1rem;
+  margin: 1rem 0 0; padding: .55rem 0; font-size: .92rem;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
 }
+.toc-label { color: var(--muted); font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; }
 .toc a { text-decoration: none; padding: .15rem 0; }
 .toc a:hover { text-decoration: underline; }
 
@@ -176,10 +174,7 @@ sup { line-height: 0; }
 .card .links { display: flex; gap: 1rem; flex-wrap: wrap; font-size: .9rem; margin-top: .6rem; }
 .empty { grid-column: 1 / -1; padding: 1rem; border: 1px dashed var(--border); border-radius: 4px; color: var(--muted); }
 
-/* One-page revision view */
-#revision-sheet { display: none; }
-body.revision #full-view, body.revision .toc, body.revision .lede, body.revision .toc-wrap { display: none; }
-body.revision #revision-sheet { display: block; }
+/* One-page revision sheet */
 .rev-grid { column-count: 2; column-gap: 1.25rem; }
 .rev-grid .rev-block { break-inside: avoid; margin-bottom: .75rem; }
 @media (max-width: 760px) { .rev-grid { column-count: 1; } }
@@ -221,14 +216,14 @@ body.revision #revision-sheet { display: block; }
   pre code { font-size: 7pt; }
   a { color: #000; text-decoration: none; }
   html { scroll-behavior: auto; }
-  body.revision h1 { font-size: 15pt; margin-bottom: 2pt; }
-  body.revision .rev-grid { column-count: 2; column-gap: 10pt; }
-  body.revision .rev-grid .rev-block { margin-bottom: 5pt; }
-  body.revision .rev-block h3 { font-size: 10pt; margin: 0 0 1.5pt; }
-  body.revision .rev-block table { font-size: 7.8pt; }
-  body.revision .rev-block th, body.revision .rev-block td { padding: 1pt 3pt; }
-  body.revision .rev-note, body.revision .rev-rules table { font-size: 7.8pt; }
-  body.revision .rev-block { break-inside: avoid; }
+  .revision-page h1 { font-size: 15pt; margin-bottom: 2pt; }
+  .revision-page .rev-grid { column-count: 2; column-gap: 10pt; }
+  .revision-page .rev-grid .rev-block { margin-bottom: 5pt; }
+  .revision-page .rev-block h3 { font-size: 10pt; margin: 0 0 1.5pt; }
+  .revision-page .rev-block table { font-size: 7.8pt; }
+  .revision-page .rev-block th, .revision-page .rev-block td { padding: 1pt 3pt; }
+  .revision-page .rev-note, .revision-page .rev-rules table { font-size: 7.8pt; }
+  .revision-page .rev-block { break-inside: avoid; }
 }
 
 .legend { display: flex; flex-wrap: wrap; gap: .5rem; list-style: none; padding: 0; margin: .5rem 0 1rem; }
@@ -424,7 +419,7 @@ kbd { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-siz
 @media print {
   .interactive, .skip-link, dialog, .card-actions, .lang-tabs, #resume { display: none !important; }
   #playground-mount .pg-controls, #playground-mount .pg-toggles, #playground-mount .pg-note, .pg-bar { display: none !important; }
-  body.print-cards #full-view, body.print-cards #revision-sheet, body.print-cards .toc, body.print-cards .toolbar, body.print-cards h1, body.print-cards .lede { display: none !important; }
+  body.print-cards main > :not(#print-cards) { display: none !important; }
   body.print-cards #print-cards { display: block; }
   #print-cards .pc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8pt; }
   #print-cards .pc { border: .75pt solid #666; padding: 6pt 8pt; break-inside: avoid; font-size: 8pt; }

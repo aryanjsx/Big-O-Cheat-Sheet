@@ -1,13 +1,14 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 import TopicCard from "./TopicCard";
 import { useProgress } from "@/context/ProgressContext";
 import { useSheet } from "@/context/SheetContext";
 import { ENTRIES, entryById } from "@/data/entries";
+import { topicHref } from "@/lib/routes";
 import { TOPICS } from "@/data/types";
 import { EMPTY_FILTERS, matchesFilters, type Filters } from "@/lib/search";
-import { reducedMotion } from "@/lib/utils";
 
 const CLASS_OPTIONS: [string, string][] = [
   ["constant", "Constant, O(1)"],
@@ -20,27 +21,21 @@ const CLASS_OPTIONS: [string, string][] = [
 
 function Resume() {
   const { state } = useProgress();
-  const { openAlgo } = useSheet();
   const e = entryById(state.last);
   if (!e) return <p id="resume" />;
   return (
     <p id="resume">
       Continue where you left off:{" "}
-      <button
-        type="button"
-        className="btn btn-sm"
-        aria-label={"Open " + e.name + ", the last topic you viewed"}
-        onClick={() => openAlgo(e.id)}
-      >
+      <Link className="btn btn-sm" href={topicHref(e.id)} aria-label={"Open " + e.name + ", the last topic you viewed"}>
         {e.name}
-      </button>
+      </Link>
     </p>
   );
 }
 
 export default function Explore() {
   const progress = useProgress();
-  const { filters, setFilters, target, announce } = useSheet();
+  const { filters, setFilters } = useSheet();
   const qRef = useRef<HTMLInputElement>(null);
   const list = ENTRIES.filter((e) => matchesFilters(e, filters, progress));
 
@@ -48,27 +43,13 @@ export default function Explore() {
     setFilters({ ...filters, [key]: value });
   }
 
-  // Open, scroll to, and focus the requested card once it is rendered.
+  // The "/" shortcut from another page lands on #search.
   useEffect(() => {
-    if (!target) return;
-    const card = document.getElementById("card-" + target.id);
-    if (!card) return;
-    const d = card.querySelector("details");
-    if (d) d.open = true;
-    card.scrollIntoView({ block: "center", behavior: reducedMotion() ? "auto" : "smooth" });
-    card.focus({ preventScroll: true });
-    if (!target.quiet) announce("Opened " + entryById(target.id)!.name);
-  }, [target, announce]);
+    if (location.hash === "#search") qRef.current?.focus();
+  }, []);
 
   return (
-    <section id="explore" aria-labelledby="explore-title">
-      <h2 id="explore-title" style={{ borderTop: "none", marginTop: "1.5rem" }}>
-        Search the sheet
-      </h2>
-      <p>
-        Search by name or keyword, then narrow by topic, complexity class, or how often the topic comes up in interviews.
-        Each result explains when to use it, why it costs what it does, and what to watch out for.
-      </p>
+    <div id="search">
       <div className="filters" role="search">
         <div className="search-box">
           <label htmlFor="q">Search</label>
@@ -137,11 +118,11 @@ export default function Explore() {
       </p>
       <div id="cards" className="cards">
         {list.length ? (
-          list.map((e) => <TopicCard key={e.id} e={e} isTarget={target?.id === e.id} />)
+          list.map((e) => <TopicCard key={e.id} e={e} />)
         ) : (
           <p className="empty">Nothing matches. Try a shorter search or reset the filters.</p>
         )}
       </div>
-    </section>
+    </div>
   );
 }

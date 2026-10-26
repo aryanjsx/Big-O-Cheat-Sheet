@@ -35,8 +35,9 @@ export function download(filename: string, text: string, mime = "text/plain;char
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-export function shareUrl(hash: string): string {
-  return location.href.split("#")[0] + "#" + hash;
+/** A full URL for a path on this site, for share links. */
+export function absoluteUrl(path: string): string {
+  return location.origin + asset(path);
 }
 
 /** Escapes a value for a Markdown table cell. */
