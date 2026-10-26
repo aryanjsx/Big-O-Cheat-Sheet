@@ -1,112 +1,143 @@
-/* The whole sheet is one page. Sections render in this order; reorder or add them here,
-   and add a matching link in components/layout/Toc.tsx. */
+import Link from "next/link";
+import HomeProgress from "@/components/home/HomeProgress";
+import HomeSearch from "@/components/home/HomeSearch";
+import LegacyLinks from "@/components/home/LegacyLinks";
+import { ENTRIES } from "@/data/entries";
+import { CURVES, fmtDuration } from "@/lib/growth";
+import { pageMeta } from "@/lib/meta";
+import { GITHUB_URL, NAV, TOPICS_PAGE, topicHref } from "@/lib/routes";
+import { asset } from "@/lib/utils";
 
-import Challenge from "@/components/interactive/Challenge";
-import Compare from "@/components/interactive/Compare";
-import Explore from "@/components/interactive/Explore";
-import Export from "@/components/interactive/Export";
-import Lookup from "@/components/interactive/Lookup";
-import Quiz from "@/components/interactive/Quiz";
-import Roadmap from "@/components/interactive/Roadmap";
-import Visualizer from "@/components/interactive/Visualizer";
-import LiveRegion from "@/components/layout/LiveRegion";
-import PrintCards from "@/components/layout/PrintCards";
-import RevisionSheet from "@/components/layout/RevisionSheet";
-import Shortcuts from "@/components/layout/Shortcuts";
-import Toc from "@/components/layout/Toc";
-import Toolbar from "@/components/layout/Toolbar";
-import AlgorithmReference from "@/components/sections/AlgorithmReference";
-import CodingPatterns from "@/components/sections/CodingPatterns";
-import DataStructures from "@/components/sections/DataStructures";
-import Fundamentals from "@/components/sections/Fundamentals";
-import GraphRepresentations from "@/components/sections/GraphRepresentations";
-import GraphTree from "@/components/sections/GraphTree";
-import MoreDataStructures from "@/components/sections/MoreDataStructures";
-import Notation from "@/components/sections/Notation";
-import Sorting from "@/components/sections/Sorting";
-import InteractiveSection from "@/components/ui/InteractiveSection";
+export const metadata = {
+  ...pageMeta(
+    "Big O cheat sheet: time and space complexity",
+    "Interactive Big O cheat sheet for coding interviews: time and space complexity of data structures, sorting, and graph algorithms, with a quiz and visualizer.",
+    "./",
+  ),
+  title: { absolute: "Big O cheat sheet: time and space complexity | BigOSheet" },
+};
+
+const N = 1_000_000;
+
+// The costs people get asked about most. Each row links to its topic page.
+const MOST_ASKED: { label: string; id: string; avg: [string, string]; worst: [string, string] }[] = [
+  { label: "Hash table lookup", id: "hash-table", avg: ["O(1)", "green"], worst: ["O(n)", "yellow"] },
+  { label: "Binary search", id: "binary-search", avg: ["O(log n)", "yellow-green"], worst: ["O(log n)", "yellow-green"] },
+  { label: "Heap push or pop", id: "binary-heap", avg: ["O(log n)", "yellow-green"], worst: ["O(log n)", "yellow-green"] },
+  { label: "Sort with mergesort", id: "mergesort", avg: ["O(n log n)", "orange"], worst: ["O(n log n)", "orange"] },
+  { label: "Sort with quicksort", id: "quicksort", avg: ["O(n log n)", "orange"], worst: ["O(n²)", "red"] },
+  { label: "BFS or DFS", id: "bfs", avg: ["O(V + E)", "yellow"], worst: ["O(V + E)", "yellow"] },
+  { label: "Dijkstra with a binary heap", id: "dijkstra", avg: ["O((V + E) log V)", "orange"], worst: ["O((V + E) log V)", "orange"] },
+  { label: "Generate every subset", id: "backtracking", avg: ["O(2ⁿ)", "dark-red"], worst: ["O(2ⁿ)", "dark-red"] },
+];
 
 export default function Home() {
   return (
     <>
-      <a className="skip-link" href="#explore">
-        Skip to search
-      </a>
-      <LiveRegion />
-      <main>
-        <h1>Big O cheat sheet</h1>
-        <p className="lede">
-          Time and space complexity for common data structures, sorting algorithms, graph and tree algorithms, and the coding
-          interview staples that sit between them. Examples are in Python, with Java, C++, and JavaScript on selected topics.
-        </p>
-        <Toolbar />
-        <Toc />
-
-        <div id="full-view">
-          <Explore />
-          <InteractiveSection
-            id="lookup"
-            title="Complexity lookup"
-            lede="Type an operation or algorithm to see its best, average, and worst case in one place, with the assumption behind the average case and the caveat people usually miss."
-          >
-            <Lookup />
-          </InteractiveSection>
-          <InteractiveSection
-            id="roadmap"
-            title="DSA interview roadmap"
-            lede="A suggested order for learning the topics on this sheet. Each step lists what to learn first. Tick a topic when you are comfortable with it. Your progress is stored in this browser only."
-          >
-            <Roadmap />
-          </InteractiveSection>
-
-          <Fundamentals />
-          <DataStructures />
-          <MoreDataStructures />
-          <GraphRepresentations />
-          <Sorting />
-          <AlgorithmReference />
-          <GraphTree />
-          <CodingPatterns />
-
-          <InteractiveSection
-            id="visualizer"
-            title="Algorithm visualizer"
-            lede="Watch binary search, linear search, bubble sort, merge sort, BFS, and DFS work one step at a time. Each step shows what was compared or moved, and the counters show where the cost comes from. Step back as well as forward."
-          >
-            <Visualizer />
-          </InteractiveSection>
-          <InteractiveSection id="quiz" title="Big O quiz">
-            <Quiz />
-          </InteractiveSection>
-          <InteractiveSection
-            id="challenge"
-            title="Code complexity challenges"
-            lede="Read the snippet, then predict both its time and its auxiliary space before you reveal the answer. Snippets are shown in Python, JavaScript, and Java. Costs can differ between languages, and the explanation says when they do."
-          >
-            <Challenge />
-          </InteractiveSection>
-          <InteractiveSection
-            id="compare"
-            title="Compare two algorithms"
-            lede="Pick any two topics to compare time, space, stability, best uses, and trade-offs. Copy the result as a Markdown table or share a link that opens the same comparison."
-          >
-            <Compare />
-          </InteractiveSection>
-          <InteractiveSection
-            id="export"
-            title="Export and share"
-            lede="Take the sheet with you. Copy a Markdown table, download a CSV, or print compact topic cards for the topics you choose."
-          >
-            <Export />
-          </InteractiveSection>
-
-          <Notation />
+      <LegacyLinks />
+      <section className="hero" aria-labelledby="home-title">
+        <div>
+          <p className="eyebrow">Big O reference for coding interviews</p>
+          <h1 id="home-title">Time and space complexity, with the fine print.</h1>
+          <p className="lede">
+            {ENTRIES.length} data structures, algorithms, and patterns. Every bound says whether it is average, amortized, or
+            worst case, and what it assumes.
+          </p>
+          <HomeSearch />
+          <p className="hero-links">
+            <Link href="/revision/">One-page revision sheet</Link>
+            <Link href="/roadmap/">Where to start</Link>
+            <a href={asset("/Big-O-Sheet.pdf")} download>
+              Download the PDF
+            </a>
+          </p>
         </div>
 
-        <RevisionSheet />
-        <PrintCards />
-      </main>
-      <Shortcuts />
+        <aside className="scale-card" aria-labelledby="scale-title">
+          <h2 id="scale-title">One million items</h2>
+          <p>Roughly how long each class takes at 10⁸ simple operations a second.</p>
+          <table>
+            <tbody>
+              {CURVES.map((c) => (
+                <tr key={c.key}>
+                  <td>
+                    <code className={c.cls}>{c.label}</code>
+                  </td>
+                  <td>{fmtDuration(c.l(N))}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p className="scale-note">
+            That gap is the whole point. <Link href="/basics/">Try other sizes in the playground</Link>.
+          </p>
+        </aside>
+      </section>
+
+      <HomeProgress />
+
+      <section className="home-section" aria-labelledby="index-title">
+        <h2 id="index-title">What&apos;s here</h2>
+        <div className="index-grid">
+          {NAV.map((group) => {
+            const links = group.label === "Reference" ? [TOPICS_PAGE, ...group.links] : group.links;
+            return (
+              <div key={group.label}>
+                <h3>{group.label}</h3>
+                <ol className="index-list">
+                  {links.map((l) => (
+                    <li key={l.href}>
+                      <span>
+                        <Link href={l.href}>{l.label}</Link>
+                        <p>{l.blurb}</p>
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="home-section" aria-labelledby="asked-title">
+        <h2 id="asked-title">The ones you will be asked about</h2>
+        <p>If you only memorize eight lines, make it these. Each links to the full explanation.</p>
+        <div className="table-wrap" role="region" aria-label="Most asked complexities" tabIndex={0}>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Operation</th>
+                <th>Average</th>
+                <th>Worst</th>
+              </tr>
+            </thead>
+            <tbody>
+              {MOST_ASKED.map((r) => (
+                <tr key={r.label}>
+                  <td>
+                    <Link href={topicHref(r.id)}>{r.label}</Link>
+                  </td>
+                  <td>
+                    <code className={r.avg[1]}>{r.avg[0]}</code>
+                  </td>
+                  <td>
+                    <code className={r.worst[1]}>{r.worst[0]}</code>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="footnotes">
+          The hash table worst case assumes many keys collide. Quicksort hits O(n²) with a bad pivot on sorted input. The
+          colors match the strip at the top of every page: green is cheapest, dark red is exponential.
+        </p>
+      </section>
+
+      <p className="home-note">
+        Found a bound that looks wrong? <a href={GITHUB_URL + "/issues"}>Open an issue</a> with a source, and it gets fixed.
+      </p>
     </>
   );
 }

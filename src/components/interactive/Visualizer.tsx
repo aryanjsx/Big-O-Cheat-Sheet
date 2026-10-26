@@ -1,10 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import Field from "@/components/ui/Field";
 import { useSheet } from "@/context/SheetContext";
 import { entryById } from "@/data/entries";
 import { useMounted } from "@/lib/hooks";
+import { topicHref } from "@/lib/routes";
 import { reducedMotion } from "@/lib/utils";
 import { ALGOS, GRAPH, LEGEND, randomArray, type Algo, type Frame } from "@/lib/visualizer";
 
@@ -274,7 +276,7 @@ export default function Visualizer() {
         {algo.time}.{" "}
         <strong>Auxiliary space: </strong>
         {algo.space}.{" "}
-        {algo.entry && entryById(algo.entry) && <a href={"#algo=" + algo.entry}>Open the card</a>}
+        {algo.entry && entryById(algo.entry) && <Link href={topicHref(algo.entry)}>Read the topic</Link>}
       </p>
       <div className="chart viz-stage">
         <svg

@@ -1,21 +1,27 @@
 import type { Metadata, Viewport } from "next";
 import { SITE_URL } from "@/lib/site";
+import LiveRegion from "@/components/layout/LiveRegion";
+import Shortcuts from "@/components/layout/Shortcuts";
+import SiteFooter from "@/components/layout/SiteFooter";
+import SiteHeader from "@/components/layout/SiteHeader";
 import Providers from "./providers";
 import "./globals.css";
+import "./site.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Big O cheat sheet: time and space complexity | BIGOSHEET",
+  title: {
+    default: "Big O cheat sheet: time and space complexity | BigOSheet",
+    template: "%s | BigOSheet",
+  },
   description:
     "Interactive Big O cheat sheet for coding interviews: time and space complexity of data structures, sorting, and graph algorithms, with a quiz and visualizer.",
-  alternates: { canonical: "./" },
   openGraph: {
     type: "website",
-    siteName: "BIGOSHEET",
+    siteName: "BigOSheet",
     title: "Big O cheat sheet: time and space complexity",
     description:
       "Interactive Big O reference for DSA and coding interviews: complexity tables, a playground, an algorithm visualizer, a quiz, and printable PDFs.",
-    url: "./",
   },
   twitter: { card: "summary" },
 };
@@ -46,7 +52,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-        <Providers>{children}</Providers>
+        <Providers>
+          <a className="skip-link" href="#main">
+            Skip to content
+          </a>
+          <LiveRegion />
+          <SiteHeader />
+          <main id="main">{children}</main>
+          <SiteFooter />
+          <Shortcuts />
+        </Providers>
       </body>
     </html>
   );

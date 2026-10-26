@@ -1,8 +1,6 @@
 export default function CodingPatterns() {
   return (
     <>
-      <h2 id="coding-patterns">Coding patterns</h2>
-      <p>Interview problems tend to reuse a handful of patterns. Knowing the typical cost of each lets you estimate a solution before you write it.</p>
 
       <div className="callout" role="note">
         <p><strong>These are typical complexities, not guarantees.</strong> The real cost depends on the problem, on how you implement the pattern, and on any extra work such as sorting the input first. Always check the bound against your own code.</p>

@@ -1,9 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { useProgress } from "@/context/ProgressContext";
 import { useSheet } from "@/context/SheetContext";
 import { entryById } from "@/data/entries";
 import { ROADMAP } from "@/data/roadmap";
+import { topicHref } from "@/lib/routes";
 
 // Only steps whose entry exists are shown, numbered in one continuous order across levels.
 const LEVELS = ROADMAP.map((lvl) => ({ ...lvl, steps: lvl.steps.filter((s) => entryById(s.id)) }));
@@ -62,9 +64,9 @@ export default function Roadmap() {
                         }}
                       />
                       <label htmlFor={"road-" + s.id}>{e.name}</label>
-                      <a className="road-open" href={"#algo=" + s.id} aria-label={"Open the card for " + e.name}>
-                        Open card
-                      </a>
+                      <Link className="road-open" href={topicHref(s.id)} aria-label={"Read about " + e.name}>
+                        Read
+                      </Link>
                     </div>
                     <p className="road-meta">
                       <span className="road-time">{e.time}</span>

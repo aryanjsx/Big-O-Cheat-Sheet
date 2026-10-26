@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
 import CopyButton from "@/components/ui/CopyButton";
 import Field from "@/components/ui/Field";
-import { useSheet } from "@/context/SheetContext";
 import { COMPARE } from "@/data/compare";
 import type { CompareItem, CompareKind } from "@/data/types";
-import { mdCell, reducedMotion, shareUrl } from "@/lib/utils";
+import { parsePair } from "@/lib/compare";
+import { replaceHash, useHash } from "@/lib/hooks";
+import { absoluteUrl, mdCell } from "@/lib/utils";
 
 const KIND: Record<CompareKind, string> = { sort: "Sorting", graph: "Graph algorithms", search: "Searching", ds: "Data structures" };
 const ROWS: [string, keyof CompareItem][] = [
@@ -43,16 +43,12 @@ function Picker({ id, label, value, onChange }: { id: string; label: string; val
 }
 
 export default function Compare() {
-  const { compare, setCompare, compareFocusNonce } = useSheet();
+  // The pair lives in the URL hash (#mergesort,quicksort), so every comparison has its own link.
+  const [ca, cb] = parsePair(useHash());
+  const compare = { a: ca, b: cb };
+  const setCompare = (a: string, b: string) => replaceHash(a + "," + b);
   const a = COMPARE[compare.a], b = COMPARE[compare.b];
   const rows = rowsFor(a, b);
-
-  // A card's Compare button scrolls here and focuses the second picker.
-  useEffect(() => {
-    if (!compareFocusNonce) return;
-    document.getElementById("compare")?.scrollIntoView({ behavior: reducedMotion() ? "auto" : "smooth" });
-    document.getElementById("cmp-b")?.focus();
-  }, [compareFocusNonce]);
 
   function markdown() {
     const lines = [`| Property | ${mdCell(a.name)} | ${mdCell(b.name)} |`, "| --- | --- | --- |"];
@@ -63,15 +59,15 @@ export default function Compare() {
   return (
     <div className="compare">
       <div className="pg-controls">
-        <Picker id="cmp-a" label="First" value={compare.a} onChange={(v) => setCompare(v, compare.b, true)} />
-        <Picker id="cmp-b" label="Second" value={compare.b} onChange={(v) => setCompare(compare.a, v, true)} />
+        <Picker id="cmp-a" label="First" value={compare.a} onChange={(v) => setCompare(v, compare.b)} />
+        <Picker id="cmp-b" label="Second" value={compare.b} onChange={(v) => setCompare(compare.a, v)} />
       </div>
       <div className="viz-buttons">
-        <button type="button" className="btn" onClick={() => setCompare(compare.b, compare.a, true)}>
+        <button type="button" className="btn" onClick={() => setCompare(compare.b, compare.a)}>
           Swap
         </button>
         <CopyButton label="Copy as Markdown" text={markdown} />
-        <CopyButton label="Copy link" okLabel="Link copied" text={() => shareUrl(`compare=${compare.a},${compare.b}`)} />
+        <CopyButton label="Copy link" okLabel="Link copied" text={() => absoluteUrl(`/compare/#${compare.a},${compare.b}`)} />
       </div>
       <p className="callout" hidden={a.kind === b.kind}>
         {a.kind === b.kind

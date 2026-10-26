@@ -3,8 +3,6 @@ import Playground from "@/components/interactive/Playground";
 export default function Fundamentals() {
   return (
     <>
-      <h2 id="fundamentals">Complexity fundamentals and playground</h2>
-      <p>Big O describes how the work an algorithm does grows as the input size <code>n</code> grows. It ignores constants and lower-order terms, so it tells you which algorithm wins on large inputs, not which one is faster on ten items. Change <code>n</code> below to see how the growth classes pull apart.</p>
 
       <Playground />
       <p className="footnotes">Logarithms are base 2. In the linear view the chart clips at the top, so the steepest curves leave the plot early. Switch the operations axis to logarithmic to keep every curve in view, or type a larger n to see the table values diverge. Time estimates assume 10<sup>8</sup> simple operations per second.</p>

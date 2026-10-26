@@ -1,7 +1,16 @@
+import PageHeader from "@/components/layout/PageHeader";
+import PrintButton from "@/components/layout/PrintButton";
 import { ENTRIES, TOPIC_ORDER } from "@/data/entries";
+import { pageMeta } from "@/lib/meta";
+import { asset } from "@/lib/utils";
 
-/* One-page interview revision view. Lists every entry marked rel: "High", grouped by topic.
-   Hidden unless body has the "revision" class (see globals.css). */
+/* The one-page interview revision sheet. Lists every entry marked rel: "High", grouped by topic. */
+
+export const metadata = pageMeta(
+  "Interview revision sheet",
+  "The Big O costs that come up most in coding interviews, on one printable page.",
+  "revision/",
+);
 
 const SIZE_GUIDE: [string, string][] = [
   ["Up to about 10", "O(n!)"],
@@ -12,17 +21,23 @@ const SIZE_GUIDE: [string, string][] = [
   ["Up to about 100,000,000", "O(n)"],
 ];
 
-export default function RevisionSheet() {
+export default function RevisionPage() {
   return (
-    <section id="revision-sheet" aria-labelledby="rev-title">
-      <h2 id="rev-title" style={{ borderTop: "none", marginTop: "1rem" }}>
-        Interview revision sheet
-      </h2>
-      <p className="rev-note">
-        The topics that come up most in interviews, on one page. Typical costs, not guarantees: check the full sheet for
-        assumptions.
-      </p>
-      <div id="rev-grid" className="rev-grid">
+    <div className="revision-page">
+      <PageHeader
+        eyebrow="Practice"
+        title="Interview revision sheet"
+        lede="The topics that come up most in interviews, on one page. These are typical costs, not guarantees: the reference pages list the assumptions."
+        actions={
+          <>
+            <PrintButton />
+            <a className="btn" href={asset("/Big-O-Sheet-one-page.pdf")} download>
+              Download as PDF
+            </a>
+          </>
+        }
+      />
+      <div id="rev-grid" className="rev-grid" style={{ marginTop: "1.25rem" }}>
         {TOPIC_ORDER.map((topic) => {
           const rows = ENTRIES.filter((e) => e.topic === topic && e.rel === "High");
           if (!rows.length) return null;
@@ -69,6 +84,6 @@ export default function RevisionSheet() {
           Assumes roughly 10⁸ simple operations per second. Real limits depend on the language and the work per step.
         </p>
       </div>
-    </section>
+    </div>
   );
 }

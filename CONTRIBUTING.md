@@ -58,13 +58,14 @@ All content lives in `src/data/`, typed by `src/data/types.ts`. Most changes are
 
 The static tables are JSX in `src/components/sections/`, one file per section. Color classes are `green`, `yellow-green`, `yellow`, `orange`, `red`, `dark-red`, and `gray`, applied to a `<code>` element. Use the color that matches the complexity class (see the color key on the page). Write code samples inside ``<pre><code>{`...`}</code></pre>`` so whitespace is kept.
 
-## Adding a feature or section
+## Adding a page or feature
 
 1. Build the component in `src/components/interactive/` (add `"use client"` if it uses state or browser APIs).
-2. Wrap it in `<InteractiveSection id="..." title="...">` in `src/app/page.tsx`. Interactive sections are hidden when printing.
-3. Add a link to `src/components/layout/Toc.tsx`.
-4. Use `useProgress()` for anything saved in the browser, and `useSheet()` for shared UI state, such as filters, the comparison pair, opening a card (`openAlgo`), and screen reader announcements (`announce`).
-5. Anything random or read from the browser must not change the first render. Use `useMounted()` from `src/lib/hooks.ts` to render it after hydration, or the page logs a hydration error.
+2. Add a folder under `src/app/` with a `page.tsx` that renders `<PageHeader>` and your component, and exports `metadata` from `pageMeta()`.
+3. Add the page to `NAV` in `src/lib/routes.ts`. The navbar, footer, home page, and sitemap all read from it.
+4. If a table section moves to another page, update `SECTION_PAGE` in `routes.ts` so topic links still land on it.
+5. Use `useProgress()` for anything saved in the browser, and `useSheet()` for shared UI state, such as search filters and screen reader announcements (`announce`).
+6. Anything random or read from the browser must not change the first render. Use `useMounted()` or `useHash()` from `src/lib/hooks.ts`, or the page logs a hydration error.
 
 Progress is stored under one local storage key, `bigo:v1`. If you change what is stored, keep reading the old shape in `normalize()` in `ProgressContext.tsx`, so nobody loses their progress.
 
@@ -78,7 +79,7 @@ Progress is stored under one local storage key, `bigo:v1`. If you change what is
 - [ ] Tab through your change with the keyboard only, and check it with the system reduced-motion setting on.
 - [ ] If you added a quiz question or challenge, check that exactly one answer is correct.
 - [ ] Describe the source for any complexity you added or changed.
-- [ ] Regenerate `public/Big-O-Sheet.pdf` and `public/Big-O-Sheet-one-page.pdf` when content changes (print to PDF from the browser; open `#revision` for the one-page version).
+- [ ] Regenerate `public/Big-O-Sheet.pdf` and `public/Big-O-Sheet-one-page.pdf` when content changes (print to PDF from the browser; print `/revision/` for the one-page version).
 
 ## Writing style
 
