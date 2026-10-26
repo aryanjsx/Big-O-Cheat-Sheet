@@ -1,54 +1,89 @@
-# Big O Cheat Sheet
+# Big O cheat sheet
 
 A compact, browser-friendly reference for comparing the time and space complexities of common data structures, sorting algorithms, and the graph and tree algorithms that come up in DSA interviews.
 
-**Live site:** [aryanjsx.github.io/Big-O-Cheat-Sheet](https://aryanjsx.github.io/Big-O-Cheat-Sheet/). An interactive Big O notation cheat sheet for coding interview prep, with a complexity playground, an algorithm visualizer, a quiz, and printable PDFs.
+**Live site:** [aryanjsx.github.io/Big-O-Cheat-Sheet](https://aryanjsx.github.io/Big-O-Cheat-Sheet/)
+
+This version is built with [Next.js](https://nextjs.org) (App Router), React, and TypeScript. It's exported as a fully static site, so it still needs no server and can be hosted on GitHub Pages or any static host.
 
 ## What's included
 
-- **Search and filters:** search by name or keyword, then filter by topic, complexity class, or interview relevance.
-- **Explanation cards:** for 34 topics, a card with when to use it, why it costs what it does, a short Python example, common pitfalls, and a reference link.
-- **Big O playground:** change the input size n and watch O(1), O(log n), O(n), O(n log n), O(n²), and O(2ⁿ) pull apart. Switch to a logarithmic axis, hide curves, widen the chart range, and see how long each class would take at 10⁸ operations per second. Each class has a short Python example.
-- **Common data structure operations:** average- and worst-case time for access, search, insertion, and deletion, plus worst-case space complexity.
-- **More data structures:** dynamic arrays, binary heaps, tries, disjoint-set union (Union-Find), monotonic stacks, deques, and a comparison of priority queue implementations.
-- **Graph representations:** adjacency list, adjacency matrix, and edge list compared on space, edge lookup, neighbor iteration, and edge updates, with one example graph shown all three ways.
-- **Array sorting algorithms:** best-, average-, and worst-case time complexity, plus worst-case space complexity.
-- **Algorithm complexity:** a quick reference for linear search, binary search, BFS, DFS, heap operations, merge intervals, Union-Find, and Dijkstra.
-- **Graph and tree algorithms:** BFS, DFS, binary search, tree traversals, heap operations, shortest-path algorithms, and minimum spanning trees.
-- **Coding patterns:** typical time and auxiliary space for two pointers, sliding window, prefix sums, hash map counting, monotonic stacks, backtracking, permutations, and dynamic programming, with a note that these are typical costs, not guarantees.
-- **Precise notation:** the data structure and sorting tables separate average, amortized, and worst case, state their assumptions, and explain implementation differences, such as array-backed queues and unbalanced binary search trees.
-- **Print and PDF:** a print stylesheet, `Big-O-Sheet.pdf` (full sheet), and `Big-O-Sheet-one-page.pdf` (interview revision sheet). The one-page view is also available in the page by selecting **One-page revision view**, or by opening `index.html#revision`.
-- Links to further reading for the listed structures and algorithms.
+- **Search and filters:** search by name or keyword, then filter by topic, complexity class, interview relevance, or your own progress.
+- **Explanation cards:** 34 topics, each with when to use it, why it costs what it does, a Python example (plus Java, C++, and JavaScript on seven cards), common pitfalls, and a reference link.
+- **Complexity lookup:** best, average, and worst case for an operation, with the assumption and caveat behind each.
+- **DSA interview roadmap:** all 34 topics in a suggested order with prerequisites and progress tracking.
+- **Big O playground:** an interactive growth chart with operation counts and time estimates.
+- **Reference tables:** data structure operations, more data structures, priority queues, graph representations, sorting, algorithm complexity, graph and tree algorithms, and coding patterns.
+- **Algorithm visualizer:** step through linear search, binary search, bubble sort, merge sort, BFS, and DFS.
+- **Big O quiz and code challenges:** practice with explanations after every answer.
+- **Compare two algorithms:** side-by-side table, copyable as Markdown, shareable by link.
+- **Export and share:** Markdown, CSV, printable topic cards, and links such as `#algo=bfs` and `#compare=mergesort,quicksort`.
+- **One-page revision view, print stylesheet, and PDFs.**
+- **Accessibility:** keyboard shortcuts (press `?`), visible focus states, a skip link, screen reader announcements, and support for the reduced-motion setting.
 
-### Practice and study tools
+Progress (saved topics, learned topics, and quiz scores) is stored in your browser's local storage. No account or backend is involved.
 
-- **Algorithm visualizer:** step through linear search, binary search, bubble sort, merge sort, BFS, and DFS with comparison, swap, and write counters. Play, pause, step forward, and step back.
-- **Big O quiz:** ten random multiple-choice questions from a bank of 23, with an explanation after every answer, a final score, and a review of what you missed.
-- **Code complexity challenges:** predict the time and auxiliary space of short Python, JavaScript, and Java snippets before you reveal the answer.
-- **Compare two algorithms:** side-by-side time, space, stability, best uses, and trade-offs for 18 topics, such as merge sort vs. quicksort or BFS vs. DFS. Copy the table as Markdown or share a link.
-- **DSA interview roadmap:** all 34 topics in a suggested order across Beginner, Intermediate, and Advanced levels, with prerequisites for each step.
-- **Complexity lookup:** search an operation and see best, average, and worst case together, with the assumption behind the average case and the implementation caveat.
-- **Multilanguage examples:** Java, C++, and JavaScript versions next to the Python snippet on seven cards, with a note on what the language changes about the cost.
-- **Bookmarks and progress:** save topics, mark them as learned, filter by progress, and resume where you left off. Everything is stored in your browser's local storage. No account or backend is involved.
-- **Export and share:** copy a Markdown table, download a CSV (the topics or the lookup table), print compact topic cards, and copy a link that opens a specific topic (`#algo=bfs`) or comparison (`#compare=mergesort,quicksort`).
-- **Accessibility:** keyboard shortcuts (press `?` to list them), visible focus states, a skip link, text descriptions for the chart and the visualizer, and support for the reduced-motion setting. The visualizer never starts moving on its own.
+## Get started
 
-## View the cheat sheet
+You need Node.js 20.9 or later.
 
-Visit [BIGOSHEET](https://aryanjsx.github.io/Big-O-Cheat-Sheet/) or open `index.html` in a web browser. The project is a single static HTML page and does not require installation, a build step, or a development server. It works offline and follows your system's light or dark setting.
+```bash
+npm install
+```
 
-## Reading the notation
+```bash
+npm run dev
+```
 
-- `O(...)` describes an asymptotic upper bound.
-- `Ω(...)` describes an asymptotic lower bound.
-- `Θ(...)` describes a tight asymptotic bound.
-- `n` represents the input size. Graph algorithms use `V` for vertices and `E` for edges. Some algorithms use additional parameters, such as `k` or `m`, as noted in the table.
-- `α(n)` is the inverse Ackermann function, which is at most 4 for any practical input.
-- Average (expected) cost depends on a stated assumption, such as random input or a well-behaved hash function. Amortized cost averages over a worst-case sequence of operations. Worst-case cost is the most a single operation can take.
-- `N/A` indicates that the operation is not applicable in the table's context.
+Then open http://localhost:3000.
 
-Complexities are quick-reference summaries; actual performance can depend on the implementation, input characteristics, and assumptions behind each operation. Consult the linked references when exact guarantees matter.
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Starts the development server with hot reload |
+| `npm run build` | Builds the static site into `out/` |
+| `npm start` | Serves `out/` locally to check the production build |
+| `npm run lint` | Runs ESLint |
+| `npm run typecheck` | Runs the TypeScript compiler without emitting files |
+
+## Deploy
+
+`.github/workflows/deploy.yml` builds and publishes the site to GitHub Pages on every push to `main`. In the repository settings, set **Pages** to use **GitHub Actions** as the source.
+
+To build for a subpath yourself, set `NEXT_PUBLIC_BASE_PATH` (for example `/Big-O-Cheat-Sheet`) and `NEXT_PUBLIC_SITE_URL` before `npm run build`.
+
+## Project layout
+
+```
+public/                         PDFs and other static files
+src/
+  app/
+    layout.tsx                  Metadata, JSON-LD, and providers
+    page.tsx                    The page: every section, in order
+    globals.css                 Design tokens, tables, features, and print rules
+    sitemap.ts                  Generates sitemap.xml
+  data/                         All content, typed (see types.ts)
+    entries.ts                  Search cards; also feed the revision sheet, roadmap, and exports
+    lookup.ts                   Complexity lookup rows
+    roadmap.ts                  Roadmap levels and prerequisites
+    quiz.ts                     Quiz questions
+    challenges.ts               Code complexity challenges
+    compare.ts                  Comparison data
+    multilang.ts                Java, C++, and JavaScript card snippets
+  context/
+    ProgressContext.tsx         Saved and learned topics, quiz and challenge results (localStorage)
+    SheetContext.tsx            Shared UI state and share-link routing
+  lib/                          Search, growth math, visualizer frame builders, helpers
+  components/
+    sections/                   Static reference tables, one file per section
+    interactive/                Search, lookup, roadmap, playground, visualizer, quiz, and more
+    layout/                     Toolbar, section nav, revision sheet, shortcuts, print cards
+    ui/                         Small shared pieces: CopyButton, LangTabs, Field, InteractiveSection
+```
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the accuracy rules, project layout, and a pull request checklist.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the accuracy rules and how to add content or features.
+
+## License
+
+[MIT](LICENSE)
