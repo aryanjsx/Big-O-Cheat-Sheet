@@ -2,7 +2,7 @@
 
 A compact, browser-friendly reference for comparing the time and space complexities of common data structures, sorting algorithms, and the graph and tree algorithms that come up in DSA interviews. Every bound says whether it is average, amortized, or worst case, and what it assumes.
 
-**Live site:** [aryanjsx.github.io/BigOSheet](https://aryanjsx.github.io/BigOSheet/)
+**Live site:** [aryanjsx.github.io/BigOSheet](https://bigosheet.aryankr.in)
 
 Created and maintained by [Aryan Kumar](https://github.com/aryanjsx).
 
@@ -85,7 +85,7 @@ One-time setup: in the repository settings, under **Pages**, set **Source** to *
 To build for a subpath yourself, set `NEXT_PUBLIC_BASE_PATH` and `NEXT_PUBLIC_SITE_URL` before building:
 
 ```bash
-NEXT_PUBLIC_BASE_PATH=/BigOSheet NEXT_PUBLIC_SITE_URL=https://aryanjsx.github.io/BigOSheet/ npm run build
+NEXT_PUBLIC_BASE_PATH=/BigOSheet NEXT_PUBLIC_SITE_URL=https://bigosheet.aryankr.in npm run build
 ```
 
 ## Troubleshooting
