@@ -34,6 +34,16 @@ export function randomArray(n: number): number[] {
   return shuffle(pool).slice(0, n);
 }
 
+export type InputOrder = "random" | "sorted" | "reversed";
+
+/** Random distinct values, optionally pre-sorted to show best and worst cases. */
+export function makeArray(n: number, order: InputOrder): number[] {
+  const a = randomArray(n);
+  if (order === "sorted") a.sort((x, y) => x - y);
+  if (order === "reversed") a.sort((x, y) => y - x);
+  return a;
+}
+
 function bubbleFrames(input: number[]): Frame[] {
   const a = input.slice(), n = a.length, f: Frame[] = [], sorted: Marks = {};
   let c = 0, sw = 0;
@@ -105,6 +115,107 @@ function mergeFrames(input: number[]): Frame[] {
   const done: Marks = {};
   for (let x = 0; x < n; x++) done[x] = "sorted";
   snap(done, `Sorted after ${c} comparisons and ${w} writes. Merging needs a temporary buffer, so space is O(n).`);
+  return f;
+}
+
+function insertionFrames(input: number[]): Frame[] {
+  const a = input.slice(), n = a.length, f: Frame[] = [];
+  let c = 0, sh = 0;
+  const snap = (marks: Marks, msg: string) =>
+    f.push({ kind: "bars", arr: a.slice(), marks, msg, stats: { Comparisons: c, Shifts: sh } });
+  const prefix = (end: number): Marks => {
+    const m: Marks = {};
+    for (let i = 0; i < end; i++) m[i] = "range";
+    return m;
+  };
+  snap(prefix(1), "Start. The first item on its own is a sorted part. Each next item is inserted into it.");
+  for (let i = 1; i < n; i++) {
+    snap({ ...prefix(i), [i]: "mid" }, `Insert ${a[i]} into the sorted part on its left.`);
+    for (let j = i; j > 0; j--) {
+      c++;
+      const out = a[j - 1] > a[j];
+      snap(
+        { ...prefix(i + 1), [j - 1]: "compare", [j]: "compare" },
+        `Compare ${a[j - 1]} and ${a[j]}.` + (out ? " Out of order, so shift it left." : " In order, so it stays here."),
+      );
+      if (!out) break;
+      [a[j - 1], a[j]] = [a[j], a[j - 1]];
+      sh++;
+      snap({ ...prefix(i + 1), [j - 1]: "swap", [j]: "swap" }, `Shifted ${a[j - 1]} one place left.`);
+    }
+    snap(prefix(i + 1), `The first ${i + 1} items are in order.`);
+  }
+  const done: Marks = {};
+  for (let x = 0; x < n; x++) done[x] = "sorted";
+  snap(
+    done,
+    `Sorted after ${c} comparisons and ${sh} shifts. On already-sorted input each item needs one comparison, which is the O(n) best case.`,
+  );
+  return f;
+}
+
+function quickFrames(input: number[]): Frame[] {
+  const a = input.slice(), n = a.length, f: Frame[] = [], fixed: Marks = {};
+  let c = 0, sw = 0, depth = 0, maxDepth = 0;
+  const snap = (marks: Marks, msg: string) =>
+    f.push({
+      kind: "bars",
+      arr: a.slice(),
+      marks: { ...marks, ...fixed },
+      msg,
+      stats: { Comparisons: c, Swaps: sw, "Deepest recursion": maxDepth },
+    });
+  const range = (lo: number, hi: number): Marks => {
+    const m: Marks = {};
+    for (let i = lo; i <= hi; i++) m[i] = "range";
+    return m;
+  };
+  snap({}, "Start. Quicksort picks a pivot, moves smaller items to its left and larger ones to its right, then sorts each side.");
+  function sort(lo: number, hi: number) {
+    if (lo > hi) return;
+    depth++;
+    maxDepth = Math.max(maxDepth, depth);
+    if (lo === hi) {
+      fixed[lo] = "sorted";
+      snap({}, `Position ${lo} is a part of one item, so it is already in place.`);
+      depth--;
+      return;
+    }
+    const pivot = a[hi];
+    snap({ ...range(lo, hi), [hi]: "mid" }, `Partition positions ${lo} to ${hi} around the pivot ${pivot}, the last item.`);
+    let i = lo;
+    for (let j = lo; j < hi; j++) {
+      c++;
+      const smaller = a[j] < pivot;
+      snap(
+        { ...range(lo, hi), [hi]: "mid", [j]: "compare" },
+        `Compare ${a[j]} with the pivot ${pivot}.` + (smaller ? " Smaller, so it joins the left side." : " Not smaller, so it stays right."),
+      );
+      if (smaller) {
+        if (i !== j) {
+          [a[i], a[j]] = [a[j], a[i]];
+          sw++;
+          snap({ ...range(lo, hi), [hi]: "mid", [i]: "swap", [j]: "swap" }, `Swap ${a[j]} and ${a[i]}.`);
+        }
+        i++;
+      }
+    }
+    if (i !== hi) {
+      [a[i], a[hi]] = [a[hi], a[i]];
+      sw++;
+    }
+    fixed[i] = "sorted";
+    snap(range(lo, hi), `The pivot ${pivot} moves to position ${i}. Everything left of it is smaller and everything right of it is larger.`);
+    sort(lo, i - 1);
+    sort(i + 1, hi);
+    depth--;
+  }
+  sort(0, n - 1);
+  snap(
+    {},
+    `Sorted after ${c} comparisons and ${sw} swaps, with recursion ${maxDepth} levels deep. ` +
+      "Even splits give about log₂ n levels and O(n log n) time. A last-item pivot on sorted input gives n levels and O(n²).",
+  );
   return f;
 }
 
@@ -267,20 +378,41 @@ export interface Algo {
   id: string;
   label: string;
   kind: AlgoKind;
-  /** The id of the matching card, if there is one. */
+  /** The id of the matching topic. Its time and space are shown unless overridden here. */
   entry: string | null;
-  time: string;
-  space: string;
+  /** Only for algorithms without a topic entry. */
+  time?: string;
+  space?: string;
+  /** Overrides the legend for its kind when the colors mean something different. */
+  legend?: [Role, string][];
   build(data: number[], target: number): Frame[];
 }
 
 export const ALGOS: Algo[] = [
-  { id: "linear-search", label: "Linear search", kind: "search", entry: "linear-search", time: "O(n)", space: "O(1)", build: linearFrames },
-  { id: "binary-search", label: "Binary search", kind: "search", entry: "binary-search", time: "O(log n)", space: "O(1) iterative", build: binaryFrames },
+  { id: "linear-search", label: "Linear search", kind: "search", entry: "linear-search", build: linearFrames },
+  { id: "binary-search", label: "Binary search", kind: "search", entry: "binary-search", build: binaryFrames },
   { id: "bubble-sort", label: "Bubble sort", kind: "sort", entry: null, time: "O(n²), O(n) best with early exit", space: "O(1)", build: (d) => bubbleFrames(d) },
-  { id: "merge-sort", label: "Merge sort", kind: "sort", entry: "mergesort", time: "O(n log n)", space: "O(n)", build: (d) => mergeFrames(d) },
-  { id: "bfs", label: "Breadth-first search", kind: "graph", entry: "bfs", time: "O(V + E)", space: "O(V)", build: () => graphFrames("bfs") },
-  { id: "dfs", label: "Depth-first search", kind: "graph", entry: "dfs", time: "O(V + E)", space: "O(V)", build: () => graphFrames("dfs") },
+  {
+    id: "insertion-sort",
+    label: "Insertion sort",
+    kind: "sort",
+    entry: null,
+    time: "O(n²) average and worst case; O(n) on already-sorted input",
+    space: "O(1)",
+    legend: [["mid", "Item being inserted"], ["compare", "Being compared"], ["swap", "Just shifted"], ["range", "Sorted part so far"], ["sorted", "In final position"]],
+    build: (d) => insertionFrames(d),
+  },
+  { id: "merge-sort", label: "Merge sort", kind: "sort", entry: "mergesort", build: (d) => mergeFrames(d) },
+  {
+    id: "quicksort",
+    label: "Quicksort",
+    kind: "sort",
+    entry: "quicksort",
+    legend: [["mid", "Pivot"], ["compare", "Compared with the pivot"], ["swap", "Just swapped"], ["range", "Part being partitioned"], ["sorted", "In final position"]],
+    build: (d) => quickFrames(d),
+  },
+  { id: "bfs", label: "Breadth-first search", kind: "graph", entry: "bfs", build: () => graphFrames("bfs") },
+  { id: "dfs", label: "Depth-first search", kind: "graph", entry: "dfs", build: () => graphFrames("dfs") },
 ];
 
 export const LEGEND: Record<AlgoKind, [Role, string][]> = {

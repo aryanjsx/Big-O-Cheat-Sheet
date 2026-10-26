@@ -21,7 +21,7 @@ export default function Sorting() {
       </tbody></table>
       </div>
 
-      <h3 id="sorting-notation">Notation in this table</h3>
+      <h2 id="sorting-notation">Notation in this table</h2>
       <ul>
         <li><code>Θ(f)</code> is a tight bound: the cost grows like <code>f</code> and no slower or faster. It is used wherever the bound is known to be tight.</li>
         <li><code>O(f)</code> is an upper bound and <code>Ω(f)</code> is a lower bound. They are used where only one side is established.</li>

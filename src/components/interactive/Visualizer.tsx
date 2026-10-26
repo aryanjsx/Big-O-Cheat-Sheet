@@ -8,7 +8,7 @@ import { entryById } from "@/data/entries";
 import { useMounted } from "@/lib/hooks";
 import { topicHref } from "@/lib/routes";
 import { reducedMotion } from "@/lib/utils";
-import { ALGOS, GRAPH, LEGEND, randomArray, type Algo, type Frame } from "@/lib/visualizer";
+import { ALGOS, GRAPH, LEGEND, makeArray, randomArray, type Algo, type Frame, type InputOrder } from "@/lib/visualizer";
 
 const W = 640;
 
@@ -17,8 +17,8 @@ interface Run {
   target: number;
 }
 
-function newRun(algo: Algo, size: number, targetMode: string): Run {
-  const data = randomArray(size);
+function newRun(algo: Algo, size: number, targetMode: string, order: InputOrder = "random"): Run {
+  const data = algo.kind === "sort" ? makeArray(size, order) : randomArray(size);
   let target = 0;
   if (algo.kind === "search") {
     target = data[Math.floor(Math.random() * size)];
@@ -120,6 +120,7 @@ export default function Visualizer() {
   const [algoId, setAlgoId] = useState(ALGOS[0].id);
   const [size, setSize] = useState(10);
   const [targetMode, setTargetMode] = useState("in");
+  const [order, setOrder] = useState<InputOrder>("random");
   const [speed, setSpeed] = useState(600);
   // Random data differs between server and browser, so frames are drawn only after hydration.
   const [run, setRun] = useState<Run>(() => newRun(ALGOS[0], 10, "in"));
@@ -130,12 +131,13 @@ export default function Visualizer() {
 
   const frames = useMemo(() => algo.build(run.data, run.target), [algo, run]);
   const last = frames.length - 1;
+  const topic = entryById(algo.entry);
   const fr = mounted ? frames[idx] : undefined;
 
-  function regenerate(a = algo, s = size, t = targetMode) {
+  function regenerate(a = algo, s = size, t = targetMode, o = order) {
     setPlaying(false);
     setIdx(0);
-    setRun(newRun(a, s, t));
+    setRun(newRun(a, s, t, o));
   }
 
   // One timer per step while playing. Playback stops on the last frame.
@@ -230,6 +232,21 @@ export default function Visualizer() {
             <option value="out">Not in the array</option>
           </select>
         </Field>
+        <Field label="Input order" htmlFor="viz-order" hidden={algo.kind !== "sort"}>
+          <select
+            id="viz-order"
+            value={order}
+            onChange={(ev) => {
+              const o = ev.target.value as InputOrder;
+              setOrder(o);
+              regenerate(algo, size, targetMode, o);
+            }}
+          >
+            <option value="random">Random</option>
+            <option value="sorted">Already sorted</option>
+            <option value="reversed">Reversed</option>
+          </select>
+        </Field>
         <Field label="Speed" htmlFor="viz-speed">
           <select id="viz-speed" value={speed} onChange={(ev) => setSpeed(parseInt(ev.target.value, 10))}>
             <option value={1100}>Slow</option>
@@ -273,10 +290,10 @@ export default function Visualizer() {
       </p>
       <p className="viz-meta">
         <strong>Time: </strong>
-        {algo.time}.{" "}
+        {algo.time ?? topic?.time}.{" "}
         <strong>Auxiliary space: </strong>
-        {algo.space}.{" "}
-        {algo.entry && entryById(algo.entry) && <Link href={topicHref(algo.entry)}>Read the topic</Link>}
+        {algo.space ?? topic?.space}.{" "}
+        {topic && <Link href={topicHref(topic.id)}>Read the topic</Link>}
       </p>
       <div className="chart viz-stage">
         <svg
@@ -306,7 +323,7 @@ export default function Visualizer() {
       </p>
       <p className="viz-progress">{fr && `Step ${idx + 1} of ${frames.length}`}</p>
       <ul className="viz-legend" aria-label="What the colors and outlines mean">
-        {LEGEND[algo.kind].map(([role, label]) => (
+        {(algo.legend ?? LEGEND[algo.kind]).map(([role, label]) => (
           <li key={role}>
             <span className={"viz-sw viz-" + role} aria-hidden="true" />
             {label}

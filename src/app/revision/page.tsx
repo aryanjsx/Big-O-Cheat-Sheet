@@ -43,7 +43,7 @@ export default function RevisionPage() {
           if (!rows.length) return null;
           return (
             <div className="rev-block" key={topic}>
-              <h3>{topic}</h3>
+              <h2>{topic}</h2>
               <table>
                 <tbody>
                   <tr>
@@ -65,7 +65,7 @@ export default function RevisionPage() {
         })}
       </div>
       <div className="rev-rules rev-block" style={{ marginTop: ".75rem" }}>
-        <h3>Rough guide: input size to complexity</h3>
+        <h2>Rough guide: input size to complexity</h2>
         <table>
           <tbody>
             <tr>

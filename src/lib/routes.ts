@@ -34,7 +34,7 @@ export const NAV: NavGroup[] = [
     links: [
       { href: "/lookup/", label: "Complexity lookup", blurb: "Best, average, and worst case for one operation, with its caveat." },
       { href: "/compare/", label: "Compare two algorithms", blurb: "Time, space, stability, and trade-offs side by side." },
-      { href: "/visualizer/", label: "Visualizer", blurb: "Step through searches, sorts, BFS, and DFS one move at a time." },
+      { href: "/visualizer/", label: "Visualizer", blurb: "Step through searches, four sorts, BFS, and DFS one move at a time." },
       { href: "/export/", label: "Export and share", blurb: "Markdown, CSV, printable cards, and PDFs." },
     ],
   },

@@ -13,7 +13,7 @@ export const MULTILANG: Record<string, MultiLang> = {
   },
   'hash-table': {
     java: { code: 'Map<String, Integer> counts = new HashMap<>();\nfor (String w : words) {\n    counts.merge(w, 1, Integer::sum);   // O(1) expected\n}',
-      cost: 'HashMap converts long collision chains into balanced trees (since Java 8), so a single bucket is O(log n) in the worst case, though a heavily colliding table is still slow.' },
+      cost: 'Since Java 8, HashMap turns long collision chains into balanced trees. If many keys share the same hash code, the tree keeps lookups at O(log n) only when the keys are Comparable; otherwise a lookup can still scan O(n) entries.' },
     cpp: { code: 'std::unordered_map<std::string, int> counts;\nfor (const auto& w : words) {\n    counts[w]++;          // O(1) expected; O(n) worst case\n}',
       cost: 'unordered_map is a hash table with O(n) worst-case operations. std::map is a balanced tree with O(log n) guaranteed and sorted order.' },
     javascript: { code: 'const counts = new Map();\nfor (const w of words) {\n  counts.set(w, (counts.get(w) ?? 0) + 1);   // O(1) expected\n}',
