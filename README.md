@@ -2,7 +2,7 @@
 
 A compact, browser-friendly reference for comparing the time and space complexities of common data structures, sorting algorithms, and the graph and tree algorithms that come up in DSA interviews. Every bound says whether it is average, amortized, or worst case, and what it assumes.
 
-**Live site:** [aryanjsx.github.io/BigOSheet](https://bigosheet.aryankr.in)
+**Live site:** [bigosheet.aryankr.in](https://bigosheet.aryankr.in)
 
 Created and maintained by [Aryan Kumar](https://github.com/aryanjsx).
 
