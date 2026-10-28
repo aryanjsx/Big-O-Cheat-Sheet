@@ -45,11 +45,12 @@ export default function RevisionPage() {
             <div className="rev-block" key={topic}>
               <h2>{topic}</h2>
               <table>
+                <caption>Time and space complexity for high-relevance {topic.toLowerCase()} interview topics.</caption>
                 <tbody>
                   <tr>
-                    <th>Topic</th>
-                    <th>Time</th>
-                    <th>Space</th>
+                    <th scope="col">Topic</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Space</th>
                   </tr>
                   {rows.map((e) => (
                     <tr key={e.id}>
@@ -67,10 +68,11 @@ export default function RevisionPage() {
       <div className="rev-rules rev-block" style={{ marginTop: ".75rem" }}>
         <h2>Rough guide: input size to complexity</h2>
         <table>
+          <caption>Approximate input sizes commonly associated with each complexity class.</caption>
           <tbody>
             <tr>
-              <th>Input size n</th>
-              <th>Complexity that usually fits</th>
+              <th scope="col">Input size n</th>
+              <th scope="col">Complexity that usually fits</th>
             </tr>
             {SIZE_GUIDE.map(([n, c]) => (
               <tr key={n}>

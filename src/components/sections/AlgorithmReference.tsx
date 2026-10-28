@@ -5,14 +5,18 @@ export default function AlgorithmReference() {
       <p>A quick reference for the searching, graph, heap, and interval algorithms that come up most in interviews. Detailed breakdowns follow in the next section.</p>
 
       <div className="table-wrap" role="region" aria-label="Algorithm complexity reference" tabIndex={0}>
-      <table className="table"><tbody>
+      <table className="table">
+      <caption>Time and space complexity of commonly asked search, graph, heap, and interval algorithms.</caption>
+      <thead>
         <tr>
-          <th>Algorithm</th>
-          <th>Best</th>
-          <th>Average</th>
-          <th>Worst</th>
-          <th>Space</th>
+          <th scope="col">Algorithm</th>
+          <th scope="col">Best</th>
+          <th scope="col">Average</th>
+          <th scope="col">Worst</th>
+          <th scope="col">Space</th>
         </tr>
+      </thead>
+      <tbody>
         <tr>
           <td>Linear search</td>
           <td><code className="green">O(1)</code></td>

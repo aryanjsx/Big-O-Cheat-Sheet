@@ -23,7 +23,11 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const e = entryById((await params).id);
   if (!e) return {};
-  return pageMeta(`${e.name}: time and space complexity`, `${e.time}. ${e.when}`, `topics/${e.id}/`);
+  return pageMeta(
+    `${e.name}: time and space complexity`,
+    `${e.time}. ${e.when} ${e.pitfall}`,
+    `topics/${e.id}/`,
+  );
 }
 
 const STEPS = ROADMAP.flatMap((l) => l.steps.map((s) => ({ ...s, level: l.level })));
@@ -42,7 +46,15 @@ export default async function TopicPage({ params }: Props) {
 
   return (
     <div data-topic-page={e.id}>
-      <PageHeader eyebrow={e.topic} eyebrowHref="/topics/" title={e.name} lede={e.when} />
+      <PageHeader
+        eyebrow={e.topic}
+        eyebrowHref="/topics/"
+        title={e.name}
+        lede={e.when}
+        breadcrumbHref={topicHref(e.id)}
+        breadcrumbParent={{ label: "Topics", href: "/topics/" }}
+        articleDescription={`${e.time} ${e.when}`}
+      />
 
       <div className="topic-layout">
         <div>
@@ -54,6 +66,7 @@ export default async function TopicPage({ params }: Props) {
 
           <div className="table-wrap" role="region" aria-label={"Cost of " + e.name} tabIndex={0}>
             <table className="table topic-facts">
+              <caption>Time and auxiliary space complexity of {e.name}.</caption>
               <tbody>
                 <tr>
                   <th scope="row">Time</th>
@@ -81,13 +94,14 @@ export default async function TopicPage({ params }: Props) {
               <h2>Operation by operation</h2>
               <div className="table-wrap" role="region" aria-label={"Operations for " + e.name} tabIndex={0}>
                 <table className="table">
+                  <caption>Best, average, worst-case, and space complexity for {e.name} operations.</caption>
                   <thead>
                     <tr>
-                      <th>Operation</th>
-                      <th>Best</th>
-                      <th>Average</th>
-                      <th>Worst</th>
-                      <th>Space</th>
+                      <th scope="col">Operation</th>
+                      <th scope="col">Best</th>
+                      <th scope="col">Average</th>
+                      <th scope="col">Worst</th>
+                      <th scope="col">Space</th>
                     </tr>
                   </thead>
                   <tbody>

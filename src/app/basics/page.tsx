@@ -13,6 +13,8 @@ export default function BasicsPage() {
   return (
     <>
       <PageHeader
+        breadcrumbHref="/basics/"
+        articleDescription="What Big O notation means, how O(1) through O(2ⁿ) grow, and how to read average, amortized, and worst-case bounds."
         eyebrow="Reference"
         id="fundamentals"
         title="Big O basics"

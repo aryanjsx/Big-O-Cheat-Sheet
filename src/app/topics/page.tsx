@@ -13,6 +13,7 @@ export default function TopicsPage() {
   return (
     <>
       <PageHeader
+        breadcrumbHref="/topics/"
         title="Topics"
         lede={`All ${ENTRIES.length} topics on the site. Search by name or keyword, then narrow by topic, complexity class, interview relevance, or your own progress. Open a topic for the explanation, code, and pitfalls.`}
       />

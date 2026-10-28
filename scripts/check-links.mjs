@@ -4,6 +4,7 @@
 // - canonical, og:url, og:image, and twitter:image tags, and sitemap entries, point at real
 //   pages or files on the site URL
 // - every page has one h1 and no skipped heading levels
+// - metadata lengths, JSON-LD, table captions/headers, image alt text, robots, and the manifest
 // Uses the same NEXT_PUBLIC_BASE_PATH and NEXT_PUBLIC_SITE_URL as the build. No dependencies.
 
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
@@ -11,7 +12,7 @@ import { join, relative, sep } from "node:path";
 
 const OUT = "out";
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
-const SITE = (process.env.NEXT_PUBLIC_SITE_URL || "https://aryanjsx.github.io/BigOSheet/").replace(/\/?$/, "/");
+const SITE = (process.env.NEXT_PUBLIC_SITE_URL || "https://bigosheet.aryankr.in/").replace(/\/?$/, "/");
 
 if (!existsSync(OUT)) {
   console.error("No out/ folder. Run `npm run build` first.");
@@ -31,6 +32,8 @@ const idsOf = (file) => {
   if (!ids.has(file)) ids.set(file, new Set([...readFileSync(file, "utf8").matchAll(/\sid="([^"]+)"/g)].map((m) => m[1])));
   return ids.get(file);
 };
+const decodeHtml = (s) =>
+  s.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#x27;|&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
 
 /** Maps a site path such as "/sorting/" to the file that serves it, or null. */
 function fileFor(path) {
@@ -49,6 +52,39 @@ let checked = 0;
 for (const page of pages) {
   const html = readFileSync(page, "utf8");
   const where = relative(OUT, page).split(sep).join("/");
+  const title = decodeHtml(html.match(/<title>(.*?)<\/title>/)?.[1] ?? "");
+  const description = decodeHtml(html.match(/<meta name="description" content="(.*?)"/)?.[1] ?? "");
+  if (title.length < 50 || title.length > 60) problems.push(`${where}: title is ${title.length} characters; expected 50–60`);
+  if (description.length < 140 || description.length > 160) {
+    problems.push(`${where}: description is ${description.length} characters; expected 140–160`);
+  }
+  if (!/<html lang="en">/.test(html)) problems.push(`${where}: missing <html lang="en">`);
+  if (!/<meta name="viewport" content="width=device-width, initial-scale=1"/.test(html)) {
+    problems.push(`${where}: missing a responsive viewport meta tag`);
+  }
+  const canonical = html.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
+  const ogUrl = html.match(/<meta property="og:url" content="([^"]+)"/)?.[1];
+  const noIndex = /<meta name="robots" content="[^"]*noindex/.test(html);
+  if (!canonical && !noIndex) problems.push(`${where}: missing canonical URL`);
+  if (canonical && ogUrl && canonical !== ogUrl) problems.push(`${where}: canonical and og:url do not match`);
+
+  for (const [, json] of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+    try {
+      JSON.parse(json);
+    } catch {
+      problems.push(`${where}: invalid JSON-LD`);
+    }
+  }
+  for (const [, table] of html.matchAll(/(<table\b[\s\S]*?<\/table>)/g)) {
+    if (!/<caption(?:\s|>)/.test(table)) problems.push(`${where}: table is missing a caption`);
+    for (const [, header] of table.matchAll(/(<th\b[^>]*>)/g)) {
+      if (!/\bscope=/.test(header)) problems.push(`${where}: table header is missing scope`);
+    }
+  }
+  for (const [, image] of html.matchAll(/(<img\b[^>]*>)/g)) {
+    if (!/\balt=/.test(image)) problems.push(`${where}: image is missing alt text`);
+  }
+
   for (const [, attr, url] of html.matchAll(/\s(href|src)="([^"]+)"/g)) {
     if (/^(https?:|mailto:|data:|javascript:)/.test(url)) continue;
     checked++;
@@ -108,6 +144,8 @@ else {
   }
   console.log(`sitemap.xml: ${locs.length} URLs`);
 }
+if (!existsSync(join(OUT, "robots.txt"))) problems.push("robots.txt is missing");
+if (!existsSync(join(OUT, "site.webmanifest"))) problems.push("site.webmanifest is missing");
 
 console.log(`Checked ${checked} links on ${pages.length} pages (base path "${BASE}", site ${SITE}).`);
 if (problems.length) {

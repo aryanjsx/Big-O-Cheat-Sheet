@@ -5,13 +5,15 @@ export default function MoreDataStructures() {
       <p>These structures answer different questions than the table above, so each lists the operations it is actually used for. In the trie rows, <code>m</code> is the key length.</p>
 
       <div className="table-wrap" role="region" aria-label="Additional data structure operations" tabIndex={0}>
-      <table className="table"><tbody>
+      <table className="table">
+      <caption>Time and space costs for dynamic arrays, heaps, tries, Union-Find, stacks, and deques.</caption>
+      <tbody>
         <tr>
-          <th>Data structure</th>
-          <th>Operation</th>
-          <th>Time</th>
-          <th>Space</th>
-          <th className="notes">Notes</th>
+          <th scope="col">Data structure</th>
+          <th scope="col">Operation</th>
+          <th scope="col">Time</th>
+          <th scope="col">Space</th>
+          <th scope="col" className="notes">Notes</th>
         </tr>
 
         <tr>
@@ -80,14 +82,16 @@ export default function MoreDataStructures() {
       <h3 id="priority-queues">Priority queue implementations</h3>
       <p>A priority queue is an interface, not a single structure. The cost of each operation depends on what sits underneath.</p>
       <div className="table-wrap" role="region" aria-label="Priority queue implementations compared" tabIndex={0}>
-      <table className="table"><tbody>
+      <table className="table">
+      <caption>Peek, insert, extract, and decrease-key costs by priority queue implementation.</caption>
+      <tbody>
         <tr>
-          <th>Implementation</th>
-          <th>Peek</th>
-          <th>Insert</th>
-          <th>Extract min or max</th>
-          <th>Decrease key</th>
-          <th className="notes">Notes</th>
+          <th scope="col">Implementation</th>
+          <th scope="col">Peek</th>
+          <th scope="col">Insert</th>
+          <th scope="col">Extract min or max</th>
+          <th scope="col">Decrease key</th>
+          <th scope="col" className="notes">Notes</th>
         </tr>
         <tr>
           <td>Unsorted array</td>

@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: { absolute: "Big O cheat sheet page not found for DSA | BigOSheet" },
+  description:
+    "This BigOSheet page was not found. Visit the Big O cheat sheet for time and space complexity tables, algorithm references, and DSA interview topics.",
+  robots: { index: false, follow: true },
+};
 
 export default function NotFound() {
   return (

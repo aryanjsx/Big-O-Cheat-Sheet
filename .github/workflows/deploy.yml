@@ -16,9 +16,10 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  # A project site is served from /<repo-name>, for example https://aryanjsx.github.io/BigOSheet/.
+  # GitHub Pages serves this project build from /<repo-name>.
   NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
-  NEXT_PUBLIC_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+  # The public canonical host is the production site, even when building the Pages preview.
+  NEXT_PUBLIC_SITE_URL: https://bigosheet.aryankr.in/
 
 jobs:
   check:
