@@ -271,9 +271,9 @@ export default function Playground() {
             <caption>Approximate operations for n = {n.toLocaleString("en-US")}. Logarithms are base 2.</caption>
             <thead>
               <tr>
-                <th>Complexity</th>
-                <th>Operations</th>
-                <th>Estimated time at 10⁸ operations per second</th>
+                <th scope="col">Complexity</th>
+                <th scope="col">Operations</th>
+                <th scope="col">Estimated time at 10⁸ operations per second</th>
               </tr>
             </thead>
             <tbody>

@@ -19,6 +19,49 @@ export const metadata = {
   title: { absolute: "Big O cheat sheet: time and space complexity | BigOSheet" },
 };
 
+const FAQS = [
+  {
+    question: "What is Big O notation?",
+    answer:
+      "Big O notation describes an upper bound on how an algorithm's resource use grows with input size. It ignores constant factors and lower-order terms, so O(n) describes linear growth even if one implementation is several times faster than another.",
+  },
+  {
+    question: "What is the difference between time and space complexity?",
+    answer:
+      "Time complexity describes how the number of operations grows as the input grows. Space complexity describes how memory use grows; this sheet reports auxiliary space separately from the input unless a table says otherwise.",
+  },
+  {
+    question: "What is the time complexity of quicksort?",
+    answer:
+      "Quicksort is Θ(n log n) in the best and average cases and O(n²) in the worst case, when partitions are repeatedly very uneven. Its recursion stack is typically O(log n), but can reach O(n) in the worst case.",
+  },
+  {
+    question: "What is the time complexity of merge sort?",
+    answer:
+      "Merge sort takes Θ(n log n) time in its best, average, and worst cases. Array implementations generally need Θ(n) auxiliary space for merging.",
+  },
+  {
+    question: "What is the time complexity of binary search?",
+    answer:
+      "Binary search takes O(log n) time on sorted data that supports efficient random access. The iterative version uses O(1) auxiliary space; a recursive version uses O(log n) stack space.",
+  },
+  {
+    question: "Which common complexity classes should I know?",
+    answer:
+      "Know constant O(1), logarithmic O(log n), linear O(n), linearithmic O(n log n), quadratic O(n²), and exponential O(2ⁿ). Their relative practicality depends on input size and the work each step performs.",
+  },
+  {
+    question: "What are the average and worst-case costs of a hash table?",
+    answer:
+      "Lookup, insertion, and deletion are typically O(1) on average under suitable hashing and load-factor assumptions. A worst-case operation can be O(n) if many keys collide.",
+  },
+  {
+    question: "What does amortized time complexity mean?",
+    answer:
+      "An amortized bound averages the cost across a sequence of operations, without assuming random input. For example, a dynamic-array append is O(1) amortized even though a resizing append can take O(n).",
+  },
+];
+
 const N = 1_000_000;
 
 // The costs people get asked about most, by row name in data/lookup.ts.
@@ -59,12 +102,13 @@ export default function Home() {
           <h2 id="scale-title">One million items</h2>
           <p>Operation count divided by an assumed 10⁸ simple operations a second. An estimate, not a benchmark.</p>
           <table>
+            <caption>Illustrative time for common operation-count growth rates at n = 1,000,000</caption>
             <tbody>
               {CURVES.map((c) => (
                 <tr key={c.key}>
-                  <td>
+                  <th scope="row">
                     <code className={c.cls}>{c.label}</code>
-                  </td>
+                  </th>
                   <td>{fmtDuration(c.l(N))}</td>
                 </tr>
               ))}
@@ -107,11 +151,12 @@ export default function Home() {
         <p>If you only memorize eight lines, make it these. Each links to the full explanation, and the <Link href="/lookup/">lookup</Link> has the assumptions.</p>
         <div className="table-wrap" role="region" aria-label="Most asked complexities" tabIndex={0}>
           <table className="table">
+            <caption>Best-known, average, and worst-case time complexity for common DSA operations</caption>
             <thead>
               <tr>
-                <th>Operation</th>
-                <th>Average</th>
-                <th>Worst</th>
+                <th scope="col">Operation</th>
+                <th scope="col">Average</th>
+                <th scope="col">Worst</th>
               </tr>
             </thead>
             <tbody>
@@ -134,6 +179,60 @@ export default function Home() {
           as a first-element pivot on sorted input. The colors match the strip at the top of every page: green is cheapest,
           dark red is exponential.
         </p>
+      </section>
+
+      <section className="home-section" aria-labelledby="big-o-intro-title">
+        <h2 id="big-o-intro-title">What is Big O notation?</h2>
+        <p>
+          Big O notation describes how an algorithm&apos;s time or memory use grows as its input grows. It abstracts away
+          machine-specific constants and lower-order terms to make the growth rate easier to compare. For example, an
+          O(n log n) sort generally scales better than an O(n²) sort on large inputs, though real performance also depends
+          on implementation and data.
+        </p>
+        <h3>Time vs. space complexity</h3>
+        <p>
+          <strong>Time complexity</strong> counts how an algorithm&apos;s work grows; <strong>space complexity</strong>{" "}
+          describes memory growth. Tables here call out auxiliary space so you can distinguish extra working memory from
+          the input itself. Bounds are labeled best, average, amortized, or worst case and include assumptions where they
+          change the answer. Read the <Link href="/basics/">Big O notation guide</Link> for growth-rate definitions, or
+          compare <Link href="/sorting/">sorting algorithm time and space</Link> and{" "}
+          <Link href="/data-structures/">data structure operation complexity</Link>.
+        </p>
+        <h3>Common complexity classes</h3>
+        <ul className="complexity-list">
+          <li><code>O(1)</code> constant: work does not grow with input size.</li>
+          <li><code>O(log n)</code> logarithmic: work grows slowly, as in binary search.</li>
+          <li><code>O(n)</code> linear: work grows with the number of items.</li>
+          <li><code>O(n log n)</code> linearithmic: common for efficient comparison sorting.</li>
+          <li><code>O(n²)</code> quadratic: often comes from comparing every pair of items.</li>
+          <li><code>O(2ⁿ)</code> exponential: can arise when exploring every subset.</li>
+        </ul>
+      </section>
+
+      <section className="home-section" aria-labelledby="faq-title">
+        <h2 id="faq-title">Big O cheat sheet: frequently asked questions</h2>
+        <div className="faq-list">
+          {FAQS.map(({ question, answer }) => (
+            <details key={question}>
+              <summary>{question}</summary>
+              <p>{answer}</p>
+            </details>
+          ))}
+        </div>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: FAQS.map(({ question, answer }) => ({
+                "@type": "Question",
+                name: question,
+                acceptedAnswer: { "@type": "Answer", text: answer },
+              })),
+            }).replace(/</g, "\\u003c"),
+          }}
+        />
       </section>
 
       <p className="home-note">

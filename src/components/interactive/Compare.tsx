@@ -82,9 +82,9 @@ export default function Compare() {
             </caption>
             <thead>
               <tr>
-                <th>Property</th>
-                <th>{a.name}</th>
-                <th>{b.name}</th>
+                <th scope="col">Property</th>
+                <th scope="col">{a.name}</th>
+                <th scope="col">{b.name}</th>
               </tr>
             </thead>
             <tbody>

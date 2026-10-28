@@ -16,6 +16,8 @@ export default function DataStructuresPage() {
   return (
     <>
       <PageHeader
+        breadcrumbHref="/data-structures/"
+        articleDescription="Access, search, insertion, and deletion costs for arrays, linked lists, hash tables, trees, heaps, tries, Union-Find, and graph representations."
         eyebrow="Reference"
         title="Data structures"
         lede="Average and worst-case cost of the common operations, then the structures that answer narrower questions, then the three ways to store a graph."

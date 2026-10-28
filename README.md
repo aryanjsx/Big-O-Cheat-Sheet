@@ -1,4 +1,7 @@
-# BigOSheet: a Big O cheat sheet
+# Big O Cheat Sheet for DSA: Time and Space Complexity | BigOSheet
+
+[![CI and deployment](https://github.com/aryanjsx/BigOSheet/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/aryanjsx/BigOSheet/actions/workflows/deploy.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 A compact, browser-friendly reference for comparing the time and space complexities of common data structures, sorting algorithms, and the graph and tree algorithms that come up in DSA interviews. Every bound says whether it is average, amortized, or worst case, and what it assumes.
 
@@ -8,7 +11,17 @@ Created and maintained by [Aryan Kumar](https://github.com/aryanjsx).
 
 ![The BigOSheet home page: a headline, a topic search box, and a table of how long each complexity class takes for one million items](docs/screenshot-home.jpg)
 
-Built with [Next.js](https://nextjs.org) (App Router), React, and TypeScript, and exported as a fully static site. It needs no server, database, or account, and can be hosted on GitHub Pages or any static host.
+| Structure or algorithm | Typical time complexity | Typical auxiliary space |
+| --- | --- | --- |
+| Array access | O(1) | — |
+| Hash table lookup | O(1) average; O(n) worst case | O(n) |
+| Binary search | O(log n) on sorted random-access data | O(1) iterative |
+| Merge sort | Θ(n log n) in every case | O(n) |
+| Quicksort | Θ(n log n) average; O(n²) worst case | O(log n) typical |
+
+These are representative bounds, not universal guarantees; see the linked reference tables for implementation assumptions and caveats.
+
+Built with [Next.js](https://nextjs.org) (App Router), React, and TypeScript, and exported as a fully static site. It needs no server, database, or account, and can be hosted on Vercel, GitHub Pages, or any static host.
 
 ## Pages
 
@@ -81,6 +94,8 @@ The point of this site is to be right. Every complexity claim names its case (be
 `.github/workflows/deploy.yml` runs on every pull request and every push to `main`. It installs from the lockfile, then runs lint, the type check, the tests, the build, and the link check. Only a push to `main` that passes every step is deployed to GitHub Pages.
 
 One-time setup: in the repository settings, under **Pages**, set **Source** to **GitHub Actions**.
+
+The public domain currently responds through Vercel, while this repository workflow also publishes a GitHub Pages project build. Keep `NEXT_PUBLIC_SITE_URL` set to the canonical production host for both builds, and make sure only the intended production host serves the canonical content.
 
 To build for a subpath yourself, set `NEXT_PUBLIC_BASE_PATH` and `NEXT_PUBLIC_SITE_URL` before building:
 

@@ -9,7 +9,7 @@
     "type": "git",
     "url": "https://github.com/aryanjsx/BigOSheet.git"
   },
-  "homepage": "https://aryanjsx.github.io/BigOSheet/",
+  "homepage": "https://bigosheet.aryankr.in/",
   "engines": {
     "node": ">=22.12.0"
   },

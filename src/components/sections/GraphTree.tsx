@@ -6,12 +6,14 @@ export default function GraphTree() {
 
       <h3 id="traversal-search">Traversal and search</h3>
       <div className="table-wrap" role="region" aria-label="Traversal and search algorithms" tabIndex={0}>
-      <table className="table"><tbody>
+      <table className="table">
+      <caption>Time and auxiliary space for traversal, search, and tree operations.</caption>
+      <tbody>
         <tr>
-          <th>Algorithm</th>
-          <th>Time</th>
-          <th>Space</th>
-          <th className="notes">Notes</th>
+          <th scope="col">Algorithm</th>
+          <th scope="col">Time</th>
+          <th scope="col">Space</th>
+          <th scope="col" className="notes">Notes</th>
         </tr>
         <tr>
           <td><a href="https://en.wikipedia.org/wiki/Breadth-first_search">Breadth-first search (BFS)</a></td>
@@ -61,11 +63,13 @@ export default function GraphTree() {
       <h3 id="heap-operations">Heap operations</h3>
       <p>For a binary heap holding n items.</p>
       <div className="table-wrap" role="region" aria-label="Binary heap operations" tabIndex={0}>
-      <table className="table"><tbody>
+      <table className="table">
+      <caption>Time and auxiliary space for common binary heap operations.</caption>
+      <tbody>
         <tr>
-          <th>Operation</th>
-          <th>Time</th>
-          <th className="notes">Notes</th>
+          <th scope="col">Operation</th>
+          <th scope="col">Time</th>
+          <th scope="col" className="notes">Notes</th>
         </tr>
         <tr>
           <td>Peek min or max</td>
@@ -107,13 +111,15 @@ export default function GraphTree() {
 
       <h3 id="shortest-paths">Shortest-path algorithms</h3>
       <div className="table-wrap" role="region" aria-label="Shortest-path algorithms" tabIndex={0}>
-      <table className="table"><tbody>
+      <table className="table">
+      <caption>Time, space, and supported edge weights for common shortest-path algorithms.</caption>
+      <tbody>
         <tr>
-          <th>Algorithm</th>
-          <th>Edge weights</th>
-          <th>Time</th>
-          <th>Space</th>
-          <th className="notes">Notes</th>
+          <th scope="col">Algorithm</th>
+          <th scope="col">Edge weights</th>
+          <th scope="col">Time</th>
+          <th scope="col">Space</th>
+          <th scope="col" className="notes">Notes</th>
         </tr>
         <tr>
           <td>BFS</td>
@@ -181,12 +187,14 @@ export default function GraphTree() {
       <h3 id="minimum-spanning-trees">Minimum spanning trees</h3>
       <p>These algorithms take a connected, undirected, weighted graph. On a disconnected graph they produce a minimum spanning forest.</p>
       <div className="table-wrap" role="region" aria-label="Minimum spanning tree algorithms" tabIndex={0}>
-      <table className="table"><tbody>
+      <table className="table">
+      <caption>Time and space complexity of minimum spanning tree algorithms.</caption>
+      <tbody>
         <tr>
-          <th>Algorithm</th>
-          <th>Time</th>
-          <th>Space</th>
-          <th className="notes">Notes</th>
+          <th scope="col">Algorithm</th>
+          <th scope="col">Time</th>
+          <th scope="col">Space</th>
+          <th scope="col" className="notes">Notes</th>
         </tr>
         <tr>
           <td><a href="https://en.wikipedia.org/wiki/Kruskal%27s_algorithm">Kruskal</a></td>

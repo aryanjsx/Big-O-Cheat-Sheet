@@ -13,6 +13,8 @@ export default function SortingPage() {
   return (
     <>
       <PageHeader
+        breadcrumbHref="/sorting/"
+        articleDescription="Best, average, and worst-case time and auxiliary space for quicksort, mergesort, heapsort, Timsort, counting sort, and more."
         eyebrow="Reference"
         id="sorting"
         title="Sorting algorithms"

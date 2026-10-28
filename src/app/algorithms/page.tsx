@@ -15,6 +15,8 @@ export default function AlgorithmsPage() {
   return (
     <>
       <PageHeader
+        breadcrumbHref="/algorithms/"
+        articleDescription="Time and space for binary search, BFS, DFS, tree traversals, heap operations, Dijkstra, Bellman–Ford, Floyd–Warshall, Kruskal, and Prim."
         eyebrow="Reference"
         title="Search and graph algorithms"
         lede="A one-table summary first, then traversal, heap, shortest-path, and spanning-tree algorithms in detail."

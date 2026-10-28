@@ -5,12 +5,14 @@ export default function GraphRepresentations() {
       <p>A graph has <code>V</code> vertices and <code>E</code> edges. The representation you pick decides which operations are cheap. Here <code>deg(v)</code> is the number of edges at vertex <code>v</code>.</p>
 
       <div className="table-wrap" role="region" aria-label="Graph representations compared" tabIndex={0}>
-      <table className="table"><tbody>
+      <table className="table">
+      <caption>Operation costs and space use for adjacency lists, adjacency matrices, and edge lists.</caption>
+      <tbody>
         <tr>
-          <th>Operation</th>
-          <th>Adjacency list</th>
-          <th>Adjacency matrix</th>
-          <th>Edge list</th>
+          <th scope="col">Operation</th>
+          <th scope="col">Adjacency list</th>
+          <th scope="col">Adjacency matrix</th>
+          <th scope="col">Edge list</th>
         </tr>
         <tr>
           <td>Space</td>

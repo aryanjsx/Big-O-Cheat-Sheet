@@ -7,12 +7,14 @@ export default function CodingPatterns() {
       </div>
 
       <div className="table-wrap" role="region" aria-label="Coding patterns quick reference" tabIndex={0}>
-      <table className="table"><tbody>
+      <table className="table">
+      <caption>Typical time and auxiliary-space costs of common coding interview patterns.</caption>
+      <tbody>
         <tr>
-          <th>Coding pattern</th>
-          <th>Typical time complexity</th>
-          <th>Typical auxiliary space</th>
-          <th className="notes">Typical problems and caveats</th>
+          <th scope="col">Coding pattern</th>
+          <th scope="col">Typical time complexity</th>
+          <th scope="col">Typical auxiliary space</th>
+          <th scope="col" className="notes">Typical problems and caveats</th>
         </tr>
         <tr>
           <td>Two pointers</td>
